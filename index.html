@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nombre de tu Editorial</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8f7f4;
+      --text: #1a1a1a;
+      --accent: #b08968;
+      --muted: #6b6b6b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    header {
+      padding: 2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .hero {
+      padding: 6rem 5%;
+      max-width: 900px;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+
+    .btn {
+      background: var(--text);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+    }
+
+    .catalogo {
+      padding: 4rem 5%;
+    }
+
+    .catalogo h3 {
+      margin-bottom: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .libro {
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+    }
+
+    .libro h4 {
+      font-size: 1rem;
+    }
+
+    .libro span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 3rem 5%;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid #ddd;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Editorial Tulipes</h1>
+  <nav>
+    <a href="#">Catálogo</a>
+    <a href="#">Autores</a>
+    <a href="#">Sobre nosotros</a>
+    <a href="#">Contacto</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Libros con olor artesanal</h2>
+  <p>
+    Publicamos narrativa, poesía contemporánea, ensayo crítico y proyectos híbridos que exploran nuevas formas de narrar.
+  </p>
+  <a href="#" class="btn">Explorar catálogo</a>
+</section>
+
+<section class="catalogo">
+  <h3>Publicaciones recientes</h3>
+  <div class="grid">
+
+    <div class="libro">
+      <h4>Título del libro</h4>
+      <span>Autor/a</span>
+    </div>
+
+    <div class="libro">
+      <h4>Otro libro</h4>
+      <span>Autor/a</span>
+    </div>
+
+    <div class="libro">
+      <h4>Libro tres</h4>
+      <span>Autor/a</span>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Tu Editorial — Guadalajara, México</p>
+</footer>
+
+</body>
+</html>
