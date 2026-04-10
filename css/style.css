@@ -90,8 +90,8 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
     }
 
     .libro {
@@ -220,4 +220,19 @@
   display: block;
   margin-left: 75%;
   font-size: 0.8rem;
+}
+
+.libro img {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.subtitulo {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0.3rem 0 0.5rem;
 }
