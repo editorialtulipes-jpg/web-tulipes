@@ -52,10 +52,6 @@
       max-width: 900px;
     }
     
-    .catalogo
-      {
-        padding: 6rem 5%
-      }
     .hero h2 {
       font-size: 3rem;
       margin-bottom: 1rem;
@@ -134,20 +130,48 @@
 
 .revista {
   padding: 6rem 5%;
-  max-width: 800px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.articulo {
-  margin-bottom: 3rem;
+.revista-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
 }
 
 .articulo h3 a {
   text-decoration: none;
   color: var(--text);
+  display: inline-block;
 }
 
 .articulo h3 a:hover {
   color: var(--accent);
+}
+
+.articulo img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  margin-bottom: 0.8rem;
+}
+
+.articulo h3 {
+  font-size: 3rem;
+  margin-bottom: 0.3rem;
+}
+
+.articulo .autor {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.articulo {
+  margin-bottom: 0;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
 }
 
 .texto {
@@ -211,9 +235,9 @@
 .epigrafe {
   font-size: 0.9rem;
   color: var(--muted);
-  margin-left: 75%;
-  max-width: 400px;
-  line-height: 1.6;
+  max-width: 300px;
+  margin-left: auto;
+  text-align: right;
 }
 
 .fuente {
@@ -235,4 +259,71 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0.3rem 0 0.5rem;
+}
+.banner {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  margin-bottom: 2.5rem;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 520px;
+  max-height: 800px;
+  margin-bottom: 3rem;
+  overflow: hidden;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+}
+
+/* overlay oscuro */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.25) 45%,
+    transparent 75%
+  );
+}
+
+/* texto encima */
+.hero-texto {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  right: 3rem;
+  color: white;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero-texto h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-texto .autor {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.hero::after {
+  z-index: 1;
+}
+
+.hero img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
