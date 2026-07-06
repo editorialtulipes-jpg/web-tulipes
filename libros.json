@@ -1,5 +1,6 @@
 [
   {
+    "id": "cuerpos-y-territorios",
     "titulo": "Cuerpos y territorios",
     "subtitulo": "la anatomia de la explotacion simbolica",
     "autor": "Alejandra Andrade Rosales",
@@ -8,6 +9,7 @@
     "link": "#"
   },
   {
+    "id": "lectura-marina-arrecife",
     "titulo": "Lectura Marina: arrecife",
     "subtitulo": "",
     "autor": "VV.AA.",
@@ -17,6 +19,7 @@
     "link": "#"
   },
   {
+    "id": "contragolpe",
     "titulo": "Contragolpe",
     "subtitulo": "",
     "autor": "Esbeidi Lara",
@@ -25,6 +28,7 @@
     "link": "#"
   },
   {
+    "id": "lectura-marina-archipielago",
     "titulo": "Lectura Marina: archipielago",
     "subtitulo": "",
     "autor": "VV.AA.",

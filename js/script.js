@@ -1,4 +1,4 @@
-async function cargarLibros(contenedorId, { enlazado = true, mostrarPrecio = true } = {}) {
+async function cargarLibros(contenedorId, { comprable = true, mostrarPrecio = true } = {}) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
@@ -30,17 +30,20 @@ async function cargarLibros(contenedorId, { enlazado = true, mostrarPrecio = tru
           : `<p class="precio">Precio a consultar</p>`)
       : "";
 
-    const contenido = `
-      ${portada}
-      <h4>${libro.titulo}</h4>
-      ${subtitulo}
-      <span>${libro.autor}</span>
-      ${antologador}
-      ${precio}
-    `;
+    const botonAgregar = comprable && libro.precio != null
+      ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-precio="${libro.precio}" data-imagen="${libro.imagen}">Agregar al carrito</button>`
+      : "";
 
-    contenedor.innerHTML += enlazado
-      ? `<a href="${libro.link}" class="libro">${contenido}</a>`
-      : `<section class="libro">${contenido}</section>`;
+    contenedor.innerHTML += `
+      <section class="libro">
+        ${portada}
+        <h4>${libro.titulo}</h4>
+        ${subtitulo}
+        <span>${libro.autor}</span>
+        ${antologador}
+        ${precio}
+        ${botonAgregar}
+      </section>
+    `;
   });
 }
