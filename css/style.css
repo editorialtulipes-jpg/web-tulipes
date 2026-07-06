@@ -652,8 +652,8 @@
 }
 
 .carrito-lista {
-  flex: 1;
   overflow-y: auto;
+  max-height: 55vh;
   display: flex;
   flex-direction: column;
   gap: 1rem;
