@@ -39,16 +39,35 @@
     header h1 {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
       font-size: 1.5rem;
       letter-spacing: 1px;
     }
 
-    .marca-icono {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      color: var(--tulipan);
+    .marca-logo {
+      height: 34px;
+      width: auto;
+      display: block;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 28px;
+      height: 22px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text);
     }
 
     nav {
@@ -61,7 +80,7 @@
     nav a {
       text-decoration: none;
       color: var(--muted);
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       padding-bottom: 0.3rem;
@@ -163,7 +182,7 @@
 
     footer {
       padding: 3rem 5%;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--muted);
       border-top: 1px solid var(--linea);
       display: flex;
@@ -245,7 +264,7 @@
 }
 
 .articulo .autor {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--muted);
   margin-bottom: 0.5rem;
 }
@@ -340,7 +359,7 @@
 }
 
 .subtitulo {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -490,7 +509,7 @@
 }
 
 .autor-card .bio {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--muted);
 }
 
@@ -505,7 +524,7 @@
 }
 
 .libro .antologador {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--muted);
   margin-bottom: 0.3rem;
 }
@@ -536,13 +555,34 @@
 
 @media (max-width: 640px) {
   header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    position: relative;
+  }
+
+  .menu-toggle {
+    display: flex;
   }
 
   nav {
-    gap: 0.8rem 1.2rem;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--linea);
+    padding: 1.2rem 6% 1.5rem;
+    z-index: 20;
+  }
+
+  nav.abierta {
+    display: flex;
+  }
+
+  nav a {
+    font-size: 0.95rem;
   }
 
   .hero {
