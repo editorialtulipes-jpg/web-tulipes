@@ -84,7 +84,7 @@
     }
 
     .hero h2 {
-      font-size: 3.5rem;
+      font-size: clamp(2.1rem, 6vw, 3.5rem);
       line-height: 1.1;
       margin-bottom: 1rem;
       max-width: 700px;
@@ -166,6 +166,35 @@
       font-size: 0.8rem;
       color: var(--muted);
       border-top: 1px solid var(--linea);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--accent);
+    }
+
+    footer > p {
+      order: 2;
+    }
+
+    footer > a,
+    footer > .footer-redes {
+      order: 1;
+    }
+
+    .footer-redes {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
     }
   .eyebrow {
   font-size: 0.75rem;
@@ -188,7 +217,8 @@
 
 .revista-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 340px));
+  justify-content: center;
   gap: 2rem;
 }
 
@@ -204,7 +234,7 @@
 
 .articulo img {
   width: 100%;
-  height: 130px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   margin-bottom: 0.8rem;
 }
@@ -228,7 +258,7 @@
 
 .texto {
   max-width: 700px;
-  margin: 6rem auto;
+  margin: 3rem auto;
   padding: 0 5%;
   line-height: 1.8;
 }
@@ -262,10 +292,14 @@
   opacity: 0.3;
 }
 
+.back-link--cierre {
+  margin: 3rem 0 0;
+}
+
 .poema {
   white-space: pre-wrap;
   max-width: 520px;
-  margin: 8rem auto;
+  margin: 3rem auto;
   line-height: 2;
   font-size: 1rem;
 }
@@ -322,9 +356,9 @@
 .hero_article {
   position: relative;
   width: 100%;
-  height: 70vh;
-  min-height: 520px;
-  max-height: 800px;
+  height: 38vh;
+  min-height: 280px;
+  max-height: 420px;
   margin-bottom: 3rem;
   overflow: hidden;
 }
@@ -352,16 +386,16 @@
 /* texto encima */
 .hero_article-texto {
   position: absolute;
-  bottom: 3rem;
-  left: 3rem;
-  right: 3rem;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
   color: white;
   z-index: 2;
   max-width: 700px;
 }
 
 .hero_article-texto h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 0.5rem;
 }
 
@@ -498,4 +532,61 @@
   font-style: italic;
   font-size: 1.05rem;
   line-height: 1.15;
+}
+
+@media (max-width: 640px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  nav {
+    gap: 0.8rem 1.2rem;
+  }
+
+  .hero {
+    padding: 5rem 6% 3.5rem;
+  }
+
+  .texto {
+    margin: 2rem auto;
+  }
+
+  .poema {
+    margin: 2rem auto;
+  }
+
+  .hero_article {
+    height: 32vh;
+    min-height: 220px;
+  }
+
+  .hero_article-texto {
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 1.5rem;
+  }
+
+  .hero_article-texto h1 {
+    font-size: 1.8rem;
+  }
+
+  .epigrafe,
+  .fuente {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+
+  .footer-redes {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
 }
