@@ -14,7 +14,7 @@
 <header>
   <h1>Editorial Tulipes</h1>
   <nav>
-   <a href="Catalogo.html">Catálogo</a>
+   <a href="Catalogo.html">Tienda</a>
    <a href="autores.html">Autores</a>
    <a href="sobre.html">Sobre nosotros</a>
    <a href="contacto.html">Contacto</a>
@@ -27,44 +27,20 @@
   <p>
     Publicamos narrativa, poesía contemporánea, ensayo crítico y proyectos híbridos que exploran nuevas formas de narrar.
   </p>
-  <a href="Catalogo.html" class="btn">Explorar catálogo</a>
+  <a href="Catalogo.html" class="btn">Explorar tienda</a>
 </section>
 
 <section class="catalogo">
   <h3>Publicaciones recientes</h3>
-  <div class="grid">
-
-    <div class="libro">
-      <img src="assets/images/cuerpos-y-territorios.png" alt="cuerpos-y-territorios">
-      <h4>Cuerpos y territorios:</h4>
-      <p class="subtitulo">la anatomia de la explotacion simbolica</p>
-      <span>Alejandra Andrade</span>
-    </div>
-
-    <div class="libro">
-      <h4>Lectur Marina: arrecife</h4>
-      <span>Antologadora: Natalia Mariposa</span>
-      <h5>VV.AA</h5>
-    </div>
-
-    <div class="libro">
-      <img src="assets/images/Contragolpe-Esbeidi-Lara.jpg" alt="Contragolpe">
-      <h4>Contragolpe</h4>
-      <span>Esbeidi Lara</span>
-    </div>
-
-    <div class="libro">
-      <H4>Lectura Marina: archipielago</H4>
-      <span> Antologadora: Melissa Niño</span>
-      <h5>VV.AA.</h5>
-    </div>
-
-  </div>
+  <div class="grid" id="contenedor-libros"></div>
 </section>
 
 <footer>
   <p>© 2026 Editorial Tulipes — Guadalajara, México</p>
 </footer>
+
+<script src="js/script.js"></script>
+<script>cargarLibros("contenedor-libros", { enlazado: false, mostrarPrecio: false });</script>
 
 </body>
 </html>

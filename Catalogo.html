@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Catálogo — Editorial Tulipes</title>
+  <title>Tienda — Editorial Tulipes</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -19,21 +19,17 @@
   </nav>
 </header>
 
-<SECtion class="hero">
-  <h2>Catálogo</h2>
-</SECtion>
+<section class="hero">
+  <h2>Tienda</h2>
+</section>
 
 <section class="catalogo">
   <h3>Todo nuestro trabajo</h3>
-  <div class="grid">
-
-<section class="libro">
-  <img src="assets/images/cuerpos-y-territorios.png" alt="cuerpos-y-territorios">
-  <h4>Cuerpos y territorios</h4>
-  <p class="subtitulo">la anatomia de la explotacion simbolica</p>
-  <span>Alejandra Andrade Rosales</span>
+  <div class="grid" id="contenedor-libros"></div>
 </section>
-<p>Aquí libros.</p>
+
+<script src="js/script.js"></script>
+<script>cargarLibros("contenedor-libros");</script>
 
 </body>
 </html>

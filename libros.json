@@ -1,0 +1,36 @@
+[
+  {
+    "titulo": "Cuerpos y territorios",
+    "subtitulo": "la anatomia de la explotacion simbolica",
+    "autor": "Alejandra Andrade Rosales",
+    "precio": 200,
+    "imagen": "assets/images/cuerpos-y-territorios.png",
+    "link": "#"
+  },
+  {
+    "titulo": "Lectura Marina: arrecife",
+    "subtitulo": "",
+    "autor": "VV.AA.",
+    "antologador": "Natalia Mariposa",
+    "precio": null,
+    "imagen": "",
+    "link": "#"
+  },
+  {
+    "titulo": "Contragolpe",
+    "subtitulo": "",
+    "autor": "Esbeidi Lara",
+    "precio": null,
+    "imagen": "assets/images/Contragolpe-Esbeidi-Lara.jpg",
+    "link": "#"
+  },
+  {
+    "titulo": "Lectura Marina: archipielago",
+    "subtitulo": "",
+    "autor": "VV.AA.",
+    "antologador": "Melissa Niño",
+    "precio": null,
+    "imagen": "",
+    "link": "#"
+  }
+]
