@@ -7,10 +7,14 @@ async function cargarLibros(contenedorId, { enlazado = true, mostrarPrecio = tru
 
   contenedor.innerHTML = "";
 
-  libros.forEach(libro => {
+  const coloresPortada = ["var(--accent)", "var(--accent-secundario)", "var(--text)"];
+
+  libros.forEach((libro, i) => {
     const portada = libro.imagen
       ? `<img src="${libro.imagen}" alt="${libro.titulo}">`
-      : `<div class="libro-sin-portada">Sin portada</div>`;
+      : `<div class="portada-tipografica" style="background:${coloresPortada[i % coloresPortada.length]}">
+           <span class="titulo-cubierta">${libro.titulo}</span>
+         </div>`;
 
     const subtitulo = libro.subtitulo
       ? `<p class="subtitulo">${libro.subtitulo}</p>`

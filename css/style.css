@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Public+Sans:wght@400;500;600&display=swap');
 
     :root {
-      --bg: #f8f7f4;
-      --text: #1a1a1a;
-      --accent: #b08968;
-      --muted: #6b6b6b;
+      --bg: #f8efe3;
+      --text: #2a2019;
+      --accent: #b5502f;
+      --accent-alta: #d97a52;
+      --accent-secundario: #6e7c5e;
+      --tulipan: #b23b52;
+      --muted: #8f7a66;
+      --linea: rgba(42, 32, 25, 0.14);
     }
 
     * {
@@ -13,14 +18,14 @@
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Public Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
     }
 
     h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Fraunces', serif;
     }
 
     header {
@@ -28,33 +33,66 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--linea);
     }
 
     header h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-size: 1.5rem;
       letter-spacing: 1px;
     }
 
+    .marca-icono {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: var(--tulipan);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+    }
+
     nav a {
-      margin-left: 1.5rem;
       text-decoration: none;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid transparent;
+      transition: color 0.25s, border-color 0.25s;
     }
-    
+
     nav a:hover {
-      color: var(--text)
+      color: var(--text);
     }
-    
+
+    nav a.activa {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
     .hero {
       padding: 8rem 5% 6rem;
       max-width: 900px;
     }
-    
+
     .hero h2 {
-      font-size: 3rem;
+      font-size: 3.5rem;
+      line-height: 1.1;
       margin-bottom: 1rem;
+      max-width: 700px;
+    }
+
+    .hero-lema {
+      font-style: italic;
+      font-weight: 500;
     }
 
     .hero p {
@@ -64,16 +102,17 @@
     }
 
     .btn {
-      background: var(--text);
+      background: var(--accent);
       color: white;
       padding: 0.8rem 1.5rem;
       text-decoration: none;
       font-size: 0.9rem;
       transition: 0.3s;
+      display: inline-block;
     }
 
     .btn:hover {
-      background: var(--accent);
+      background: var(--accent-alta);
     }
 
     .catalogo {
@@ -108,14 +147,13 @@
     }
 
     a.libro img,
-    a.libro .libro-sin-portada {
-      transition: transform 0.3s, opacity 0.3s;
+    a.libro .portada-tipografica {
+      transition: transform 0.3s ease;
     }
 
     a.libro:hover img,
-    a.libro:hover .libro-sin-portada {
-      transform: scale(1.03);
-      opacity: 0.9;
+    a.libro:hover .portada-tipografica {
+      transform: translateY(-4px);
     }
 
     a.libro:hover h4 {
@@ -127,7 +165,7 @@
       padding: 3rem 5%;
       font-size: 0.8rem;
       color: var(--muted);
-      border-top: 1px solid #ddd;
+      border-top: 1px solid var(--linea);
     }
   .eyebrow {
   font-size: 0.75rem;
@@ -135,12 +173,6 @@
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 1rem;
-}
-
-.hero h2 {
-  font-size: 3.5rem;
-  line-height: 1.1;
-  max-width: 700px;
 }
 
 .hero-text {
@@ -178,7 +210,7 @@
 }
 
 .articulo h3 {
-  font-size: 3rem;
+  font-size: 1.6rem;
   margin-bottom: 0.3rem;
 }
 
@@ -190,7 +222,7 @@
 
 .articulo {
   margin-bottom: 0;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--linea);
   padding-top: 1rem;
 }
 
@@ -367,10 +399,10 @@
 
 .form-contacto input,
 .form-contacto textarea {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Public Sans', sans-serif;
   font-size: 1rem;
   padding: 0.7rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--linea);
   background: white;
   color: var(--text);
 }
@@ -412,9 +444,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #eee;
-  color: var(--muted);
-  font-family: 'Playfair Display', serif;
+  background: rgba(110, 124, 94, 0.14);
+  color: var(--accent-secundario);
+  font-family: 'Fraunces', serif;
   font-size: 2rem;
 }
 
@@ -447,18 +479,23 @@
 .libro .precio {
   font-size: 0.9rem;
   margin: 0.3rem 0 0.6rem;
+  color: var(--accent-secundario);
+  font-weight: 600;
 }
 
-.libro-sin-portada {
+.portada-tipografica {
   width: 100%;
   max-width: 180px;
   aspect-ratio: 2 / 3;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #eee;
-  color: var(--muted);
-  font-size: 0.85rem;
-  text-align: center;
+  align-items: flex-end;
+  padding: 1rem;
+  color: var(--bg);
 }
 
+.portada-tipografica .titulo-cubierta {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.15;
+}
