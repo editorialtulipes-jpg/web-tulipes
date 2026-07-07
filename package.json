@@ -2,6 +2,7 @@
   "name": "web-tulipes",
   "private": true,
   "dependencies": {
+    "resend": "^4.0.0",
     "stripe": "^17.0.0"
   }
 }
