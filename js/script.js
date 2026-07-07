@@ -37,8 +37,14 @@ async function cargarLibros(contenedorId, { comprable = true, mostrarPrecio = tr
 
     const formatoOpciones = mostrarSelectorFormato
       ? `<div class="formato-opciones" data-formato-opciones>
-           <label><input type="radio" name="formato-${libro.id}" value="fisico" data-precio="${libro.precio_fisico}" checked> Físico — $${libro.precio_fisico}</label>
-           <label><input type="radio" name="formato-${libro.id}" value="digital" data-precio="${libro.precio_digital}"> Digital — $${libro.precio_digital}</label>
+           <label class="formato-opcion">
+             <input type="radio" name="formato-${libro.id}" value="fisico" data-precio="${libro.precio_fisico}" checked>
+             <span>Físico<b>$${libro.precio_fisico}</b></span>
+           </label>
+           <label class="formato-opcion">
+             <input type="radio" name="formato-${libro.id}" value="digital" data-precio="${libro.precio_digital}">
+             <span>Digital<b>$${libro.precio_digital}</b></span>
+           </label>
          </div>`
       : "";
 
