@@ -24,14 +24,26 @@ async function cargarLibros(contenedorId, { comprable = true, mostrarPrecio = tr
       ? `<p class="antologador">Antologadora: ${libro.antologador}</p>`
       : "";
 
-    const precio = mostrarPrecio
-      ? (libro.precio != null
-          ? `<p class="precio">$${libro.precio}</p>`
+    const tieneDigital = libro.precio_digital != null && !!libro.archivo_digital;
+    const tieneFisico = libro.precio_fisico != null;
+
+    const mostrarSelectorFormato = comprable && tieneFisico && tieneDigital;
+
+    const precio = mostrarPrecio && !mostrarSelectorFormato
+      ? (tieneFisico
+          ? `<p class="precio">$${libro.precio_fisico}</p>`
           : `<p class="precio">Precio a consultar</p>`)
       : "";
 
-    const botonAgregar = comprable && libro.precio != null
-      ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-precio="${libro.precio}" data-imagen="${libro.imagen}">Agregar al carrito</button>`
+    const formatoOpciones = mostrarSelectorFormato
+      ? `<div class="formato-opciones" data-formato-opciones>
+           <label><input type="radio" name="formato-${libro.id}" value="fisico" data-precio="${libro.precio_fisico}" checked> Físico — $${libro.precio_fisico}</label>
+           <label><input type="radio" name="formato-${libro.id}" value="digital" data-precio="${libro.precio_digital}"> Digital — $${libro.precio_digital}</label>
+         </div>`
+      : "";
+
+    const botonAgregar = comprable && tieneFisico
+      ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-imagen="${libro.imagen}" data-precio-fisico="${libro.precio_fisico}">Agregar al carrito</button>`
       : "";
 
     contenedor.innerHTML += `
@@ -42,6 +54,7 @@ async function cargarLibros(contenedorId, { comprable = true, mostrarPrecio = tr
         <span>${libro.autor}</span>
         ${antologador}
         ${precio}
+        ${formatoOpciones}
         ${botonAgregar}
       </section>
     `;

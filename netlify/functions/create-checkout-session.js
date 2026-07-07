@@ -1,49 +1,34 @@
 const Stripe = require("stripe");
 const libros = require("../../libros.json");
+const { construirParametrosSesion, ErrorValidacion } = require("../../lib/checkout-shared");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  let items;
+  let items, zona;
   try {
-    ({ items } = JSON.parse(event.body));
+    ({ items, zona } = JSON.parse(event.body));
   } catch {
     return { statusCode: 400, body: "JSON inválido" };
   }
 
-  if (!Array.isArray(items) || items.length === 0) {
-    return { statusCode: 400, body: "El carrito está vacío" };
-  }
-
-  let line_items;
+  let params;
   try {
-    line_items = items.map((item) => {
-      const libro = libros.find((l) => l.id === item.id);
-      if (!libro || libro.precio == null) {
-        throw new Error(`Libro inválido: ${item.id}`);
-      }
-      const cantidad = Math.max(1, Math.min(10, parseInt(item.cantidad, 10) || 1));
-      return {
-        quantity: cantidad,
-        price_data: {
-          currency: "mxn",
-          unit_amount: Math.round(libro.precio * 100),
-          product_data: { name: libro.titulo },
-        },
-      };
-    });
+    params = construirParametrosSesion({ items, zona, libros });
   } catch (err) {
-    return { statusCode: 400, body: err.message };
+    if (err instanceof ErrorValidacion) {
+      return { statusCode: 400, body: err.message };
+    }
+    throw err;
   }
 
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const origin = event.headers.origin || "https://www.tulipeseditorial.com";
 
   const session = await stripe.checkout.sessions.create({
-    mode: "payment",
-    line_items,
+    ...params,
     success_url: `${origin}/pago-exitoso.html`,
     cancel_url: `${origin}/pago-cancelado.html`,
   });
