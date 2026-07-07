@@ -3,10 +3,6 @@ const path = require("path");
 const libros = require("../libros.json");
 const { enviarLibrosDigitales } = require("../lib/entrega-digital");
 
-// Stripe firma el cuerpo crudo de la petición; si Vercel lo parseara a JSON
-// antes de llegar aquí, la verificación de firma fallaría siempre.
-module.exports.config = { api: { bodyParser: false } };
-
 function leerRawBody(req) {
   return new Promise((resolve, reject) => {
     const chunks = [];
@@ -16,7 +12,7 @@ function leerRawBody(req) {
   });
 }
 
-module.exports = async (req, res) => {
+async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).send("Method Not Allowed");
     return;
@@ -50,4 +46,10 @@ module.exports = async (req, res) => {
   }
 
   res.status(200).json({ received: true });
-};
+}
+
+module.exports = handler;
+// Stripe firma el cuerpo crudo de la petición; si Vercel lo parseara a JSON
+// antes de llegar aquí, la verificación de firma fallaría siempre. Debe
+// asignarse después de exportar el handler, no antes.
+module.exports.config = { api: { bodyParser: false } };
