@@ -625,6 +625,16 @@
   padding: 0 5% 6rem;
 }
 
+.autores-grupo {
+  margin-bottom: 3.5rem;
+}
+
+.autores-grupo h3 {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--linea);
+}
+
 .autores-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
