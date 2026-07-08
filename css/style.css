@@ -599,6 +599,28 @@
   font-family: inherit;
 }
 
+.form-contacto button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.form-contacto-estado {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.form-contacto-estado:empty {
+  display: none;
+}
+
+.form-contacto-exito {
+  color: var(--accent-secundario);
+}
+
+.form-contacto-error {
+  color: var(--tulipan);
+}
+
 .autores {
   padding: 0 5% 6rem;
 }
