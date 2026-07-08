@@ -156,3 +156,36 @@ async function cargarDetalleLibro(contenedorId) {
 
   contenedor.insertAdjacentHTML("afterend", otrosLibros);
 }
+
+function tarjetaArticulo(a, prefijo = "") {
+  const imagenTag = a.imagen
+    ? `<img src="${prefijo}${a.imagen}" alt="imagen del articulo">`
+    : `<div style="width:100%;aspect-ratio:4/3;background:var(--accent-secundario);display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:0.85rem;margin-bottom:0.8rem;">Imagen pendiente</div>`;
+
+  return `
+    <div class="articulo">
+      ${imagenTag}
+      <a class="etiqueta-genero" href="${prefijo}genero.html?tipo=${encodeURIComponent(a.genero)}">${a.genero}</a>
+      <h3>
+        <a href="${prefijo}textos/${a.slug}.html">${a.titulo}</a>
+      </h3>
+      <p class="autor">${a.autor}</p>
+      <p class="descripcion">
+        ${a.descripcion}
+      </p>
+    </div>
+  `;
+}
+
+async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "" } = {}) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return;
+
+  const res = await fetch(`${prefijo}revista.json`);
+  let articulos = await res.json();
+
+  if (genero) articulos = articulos.filter((a) => a.genero === genero);
+  if (excluir) articulos = articulos.filter((a) => a.slug !== excluir);
+
+  contenedor.innerHTML = articulos.map((a) => tarjetaArticulo(a, prefijo)).join("");
+}

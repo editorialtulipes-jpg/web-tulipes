@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "cable-a-tierra",
+    "titulo": "Cable a tierra",
+    "autor": "Valeria Venegas",
+    "imagen": "assets/images/cable-a-tierra.jpg",
+    "genero": "Poesía",
+    "descripcion": "Poesía ganadora de los concursos Creadores Literarios (2017) y Luvina Joven VIII."
+  },
+  {
+    "slug": "los-caminos-no-marcan-lineas",
+    "titulo": "Los caminos no marcan líneas",
+    "autor": "Valeria Zamora",
+    "imagen": "assets/images/los-caminos-no-marcan-lineas.jpg",
+    "genero": "Microrrelato",
+    "descripcion": "Estudiante de Letras Hispánicas, creadora del club de lectura Rincón de Asteria."
+  },
+  {
+    "slug": "frente-la-luna",
+    "titulo": "Frente la luna",
+    "autor": "Cristo Santamaría",
+    "imagen": "assets/images/frente-la-luna.jpg",
+    "genero": "Poesía",
+    "descripcion": "Lector de tiempo completo y estudiante de ciencia política."
+  },
+  {
+    "slug": "la-inmediatez-del-contratiempo",
+    "titulo": "La inmediatez del contratiempo",
+    "autor": "Ivanhoe García",
+    "imagen": "assets/images/la-inmediatez-del-contratiempo.jpg",
+    "genero": "Poesía",
+    "descripcion": "Fundador de los proyectos literarios Poesía Camionera y Poesía Antibacterial."
+  },
+  {
+    "slug": "vapor",
+    "titulo": "Vapor",
+    "autor": "Lorena del Carmen Gutiérrez Aviña",
+    "imagen": "assets/images/vapor.jpg",
+    "genero": "Poesía",
+    "descripcion": "Asistente editorial y docente, egresada de Letras Hispánicas."
+  },
+  {
+    "slug": "electrico-deceso",
+    "titulo": "Eléctrico deceso",
+    "autor": "Jonathan Vázquez",
+    "imagen": "assets/images/electrico-deceso.jpg",
+    "genero": "Poesía",
+    "descripcion": "Viajero, entusiasta de los corridos tumbados y estudiante de Letras Hispánicas."
+  },
+  {
+    "slug": "la-chica-de-la-biblioteca",
+    "titulo": "La chica de la biblioteca",
+    "autor": "Maleni Cervantes",
+    "imagen": null,
+    "genero": "Microrrelato",
+    "descripcion": "Egresada de Letras Hispánicas por la Universidad de Guadalajara."
+  },
+  {
+    "slug": "apologia-de-libertad",
+    "titulo": "Apología de libertad",
+    "autor": "Laura Martínez",
+    "imagen": "assets/images/apologia-de-libertad.jpg",
+    "genero": "Microrrelato",
+    "descripcion": "Creadora jalisciense y estudiante de Letras Hispánicas, conocida como Lauradelcafé."
+  },
+  {
+    "slug": "articulo-2",
+    "titulo": "Libro, testimonio y objeto personal",
+    "autor": "Mario Alberto",
+    "imagen": "assets/images/maggio.jpg",
+    "genero": "Ensayo",
+    "descripcion": "Narrativa publicada en revistas literarias de Morelia, Nogales y Guadalajara."
+  },
+  {
+    "slug": "articulo-1",
+    "titulo": "Ígnea",
+    "autor": "Frida Tejeda",
+    "imagen": "assets/images/Frida.jpg",
+    "genero": "Poesía",
+    "descripcion": "Primer lugar en el concurso de poesía Jóvenes Creadores FIL 2017."
+  }
+]

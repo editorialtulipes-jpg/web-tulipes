@@ -336,13 +336,13 @@
 
 .revista {
   padding: 6rem 5%;
-  max-width: 1000px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
 .revista-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 340px));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   justify-content: center;
   gap: 2rem;
 }
@@ -390,11 +390,21 @@
   background: rgba(110, 124, 94, 0.14);
   padding: 0.2rem 0.6rem;
   margin-bottom: 0.5rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.etiqueta-genero:hover {
+  background: rgba(110, 124, 94, 0.28);
 }
 
 .hero_article-texto .etiqueta-genero {
   color: white;
   background: rgba(255, 255, 255, 0.2);
+}
+
+.hero_article-texto .etiqueta-genero:hover {
+  background: rgba(255, 255, 255, 0.32);
 }
 
 .mas-revista {

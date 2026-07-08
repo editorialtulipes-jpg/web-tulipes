@@ -28,9 +28,10 @@
 
 <section class="revista">
 
-  <h2>Revista</h2>
+  <h2 id="titulo-genero">Revista</h2>
+  <a href="revista.html" class="back-link">← Ver toda la revista</a>
 
-  <div class="revista-grid" id="contenedor-articulos"></div>
+  <div class="revista-grid" id="contenedor-articulos" style="margin-top:2.5rem"></div>
 </section>
 
 <footer>
@@ -40,7 +41,11 @@
 
 <script src="js/menu.js"></script>
 <script src="js/script.js"></script>
-<script>cargarArticulos("contenedor-articulos");</script>
+<script>
+  const tipo = new URLSearchParams(window.location.search).get("tipo") || "";
+  document.getElementById("titulo-genero").textContent = tipo ? tipo : "Revista";
+  cargarArticulos("contenedor-articulos", { genero: tipo || undefined });
+</script>
 
 
 <div class="carrito-fondo" data-carrito-fondo></div>

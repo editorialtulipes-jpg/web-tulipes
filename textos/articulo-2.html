@@ -18,7 +18,7 @@
   <img src="../assets/images/maggio.jpg" alt="Libro, testimonio y objeto personal">
 
   <div class="hero_article-texto">
-    <p class="etiqueta-genero">Ensayo</p>
+    <a class="etiqueta-genero" href="../genero.html?tipo=Ensayo">Ensayo</a>
     <h1>Libro, testimonio 
       y objeto personal</h1>
     <p class="autor">Mario Alberto</p>
@@ -46,117 +46,7 @@
 
 <section class="revista mas-revista">
   <h3>Más de la revista</h3>
-  <div class="revista-grid">
-
-    <div class="articulo">
-      <img src="../assets/images/cable-a-tierra.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Poesía</p>
-      <h3>
-        <a href="cable-a-tierra.html">Cable a tierra</a>
-      </h3>
-      <p class="autor">Valeria Venegas</p>
-      <p class="descripcion">
-        Poesía ganadora de los concursos Creadores Literarios (2017) y Luvina Joven VIII.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <img src="../assets/images/los-caminos-no-marcan-lineas.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Microrrelato</p>
-      <h3>
-        <a href="los-caminos-no-marcan-lineas.html">Los caminos no marcan líneas</a>
-      </h3>
-      <p class="autor">Valeria Zamora</p>
-      <p class="descripcion">
-        Estudiante de Letras Hispánicas, creadora del club de lectura Rincón de Asteria.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <img src="../assets/images/frente-la-luna.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Poesía</p>
-      <h3>
-        <a href="frente-la-luna.html">Frente la luna</a>
-      </h3>
-      <p class="autor">Cristo Santamaría</p>
-      <p class="descripcion">
-        Lector de tiempo completo y estudiante de ciencia política.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <img src="../assets/images/la-inmediatez-del-contratiempo.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Poesía</p>
-      <h3>
-        <a href="la-inmediatez-del-contratiempo.html">La inmediatez del contratiempo</a>
-      </h3>
-      <p class="autor">Ivanhoe García</p>
-      <p class="descripcion">
-        Fundador de los proyectos literarios Poesía Camionera y Poesía Antibacterial.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <img src="../assets/images/vapor.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Poesía</p>
-      <h3>
-        <a href="vapor.html">Vapor</a>
-      </h3>
-      <p class="autor">Lorena del Carmen Gutiérrez Aviña</p>
-      <p class="descripcion">
-        Asistente editorial y docente, egresada de Letras Hispánicas.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <img src="../assets/images/electrico-deceso.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Poesía</p>
-      <h3>
-        <a href="electrico-deceso.html">Eléctrico deceso</a>
-      </h3>
-      <p class="autor">Jonathan Vázquez</p>
-      <p class="descripcion">
-        Viajero, entusiasta de los corridos tumbados y estudiante de Letras Hispánicas.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <div style="width:100%;aspect-ratio:4/3;background:var(--accent-secundario);display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:0.85rem;margin-bottom:0.8rem;">Imagen pendiente</div>
-      <p class="etiqueta-genero">Microrrelato</p>
-      <h3>
-        <a href="la-chica-de-la-biblioteca.html">La chica de la biblioteca</a>
-      </h3>
-      <p class="autor">Maleni Cervantes</p>
-      <p class="descripcion">
-        Egresada de Letras Hispánicas por la Universidad de Guadalajara.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <img src="../assets/images/apologia-de-libertad.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Microrrelato</p>
-      <h3>
-        <a href="apologia-de-libertad.html">Apología de libertad</a>
-      </h3>
-      <p class="autor">Laura Martínez</p>
-      <p class="descripcion">
-        Creadora jalisciense y estudiante de Letras Hispánicas, conocida como Lauradelcafé.
-      </p>
-    </div>
-
-    <div class="articulo">
-      <img src="../assets/images/Frida.jpg" alt="imagen del articulo">
-      <p class="etiqueta-genero">Poesía</p>
-      <h3>
-        <a href="articulo-1.html">Ígnea</a>
-      </h3>
-      <p class="autor">Frida Tejeda</p>
-      <p class="descripcion">
-        Primer lugar en el concurso de poesía Jóvenes Creadores FIL 2017.
-      </p>
-    </div>
-
-  </div>
+  <div class="revista-grid" id="mas-revista"></div>
 </section>
 
 <footer>
@@ -166,6 +56,9 @@
     <a href="https://www.instagram.com/el.maggio/" target="_blank" rel="noopener">Instagram — Mario Alberto</a>
   </div>
 </footer>
+
+<script src="../js/script.js"></script>
+<script>cargarArticulos("mas-revista", { excluir: "articulo-2", prefijo: "../" });</script>
 
 </body>
 </html>
