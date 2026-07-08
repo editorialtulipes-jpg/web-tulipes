@@ -8,7 +8,11 @@
     "precio_digital": 150,
     "archivo_digital": "assets/digital/placeholder.pdf",
     "imagen": "assets/images/cuerpos-y-territorios.png",
-    "link": "#"
+    "link": "#",
+    "isbn": "Pendiente",
+    "paginas": "Pendiente",
+    "genero": "Pendiente",
+    "sinopsis": "Sinopsis pendiente — agrega aquí una breve descripción del libro."
   },
   {
     "id": "lectura-marina-arrecife",
@@ -18,7 +22,11 @@
     "antologador": "Natalia Mariposa",
     "imagen": "",
     "link": "#",
-    "precio_fisico": null
+    "precio_fisico": null,
+    "isbn": "Pendiente",
+    "paginas": "Pendiente",
+    "genero": "Pendiente",
+    "sinopsis": "Sinopsis pendiente — agrega aquí una breve descripción del libro."
   },
   {
     "id": "contragolpe",
@@ -27,7 +35,11 @@
     "autor": "Esbeidi Lara",
     "imagen": "assets/images/Contragolpe-Esbeidi-Lara.jpg",
     "link": "#",
-    "precio_fisico": null
+    "precio_fisico": null,
+    "isbn": "Pendiente",
+    "paginas": "Pendiente",
+    "genero": "Pendiente",
+    "sinopsis": "Sinopsis pendiente — agrega aquí una breve descripción del libro."
   },
   {
     "id": "lectura-marina-archipielago",
@@ -37,6 +49,10 @@
     "antologador": "Melissa Niño",
     "imagen": "",
     "link": "#",
-    "precio_fisico": null
+    "precio_fisico": null,
+    "isbn": "Pendiente",
+    "paginas": "Pendiente",
+    "genero": "Pendiente",
+    "sinopsis": "Sinopsis pendiente — agrega aquí una breve descripción del libro."
   }
 ]

@@ -908,3 +908,68 @@
     gap: 0.6rem;
   }
 }
+
+.libro-enlace {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.detalle-libro {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 5% 5rem;
+  display: grid;
+  grid-template-columns: minmax(180px, 300px) 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.detalle-libro-portada img,
+.detalle-libro-portada .portada-tipografica {
+  width: 100%;
+  max-width: none;
+}
+
+.detalle-libro-info h1 {
+  margin-bottom: 0.3rem;
+}
+
+.ficha-tecnica {
+  display: grid;
+  gap: 0.4rem;
+  margin: 1.2rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid var(--linea);
+  border-bottom: 1px solid var(--linea);
+}
+
+.ficha-tecnica > div {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.ficha-tecnica dt {
+  min-width: 90px;
+  color: var(--muted);
+}
+
+.ficha-tecnica dd {
+  margin: 0;
+}
+
+.sinopsis {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .detalle-libro {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-libro-portada {
+    max-width: 220px;
+  }
+}
