@@ -15,7 +15,7 @@ function tarjetaLibro(libro, i, { comprable = true, mostrarPrecio = true } = {})
     ? `<p class="antologador">Antologadora: ${libro.antologador}</p>`
     : "";
 
-  const tieneDigital = libro.precio_digital != null && !!libro.archivo_digital;
+  const tieneDigital = libro.precio_digital != null && libro.archivos_digitales?.length > 0;
   const tieneFisico = libro.precio_fisico != null;
 
   const mostrarSelectorFormato = comprable && tieneFisico && tieneDigital;
@@ -96,7 +96,7 @@ async function cargarDetalleLibro(contenedorId) {
   const subtitulo = libro.subtitulo ? `<p class="subtitulo">${libro.subtitulo}</p>` : "";
   const antologador = libro.antologador ? `<p class="antologador">Antologadora: ${libro.antologador}</p>` : "";
 
-  const tieneDigital = libro.precio_digital != null && !!libro.archivo_digital;
+  const tieneDigital = libro.precio_digital != null && libro.archivos_digitales?.length > 0;
   const tieneFisico = libro.precio_fisico != null;
   const mostrarSelectorFormato = tieneFisico && tieneDigital;
 
