@@ -252,8 +252,28 @@ async function cargarDetalleProducto(contenedorId) {
     const m = medios[i];
 
     if (m.tipo === "video") {
-      galeriaPrincipal.innerHTML = `<video src="${m.src}" poster="${m.poster}" muted loop playsinline controls autoplay></video>`;
+      galeriaPrincipal.innerHTML = `
+        <video src="${m.src}" poster="${m.poster}" muted loop playsinline autoplay></video>
+        <button class="video-control" data-video-control aria-label="Pausar video">❚❚</button>
+      `;
       galeriaPrincipal.classList.add("es-video");
+
+      const video = galeriaPrincipal.querySelector("video");
+      const boton = galeriaPrincipal.querySelector("[data-video-control]");
+      const alternarReproduccion = (e) => {
+        e.stopPropagation();
+        if (video.paused) {
+          video.play();
+          boton.textContent = "❚❚";
+          boton.setAttribute("aria-label", "Pausar video");
+        } else {
+          video.pause();
+          boton.textContent = "▶";
+          boton.setAttribute("aria-label", "Reproducir video");
+        }
+      };
+      boton.addEventListener("click", alternarReproduccion);
+      video.addEventListener("click", alternarReproduccion);
     } else {
       galeriaPrincipal.innerHTML = `<img src="${m.src}" alt="${producto.titulo}">`;
       galeriaPrincipal.classList.remove("es-video");
