@@ -186,7 +186,32 @@ function tarjetaAnuncioNativo() {
   `;
 }
 
-async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "", anuncioEn } = {}) {
+async function tarjetaAnuncioLibro(anuncio, prefijo = "") {
+  const res = await fetch(`${prefijo}libros.json`);
+  const libros = await res.json();
+  const libro = libros.find((l) => l.id === anuncio.id);
+  if (!libro) return tarjetaAnuncioNativo();
+
+  const desde = libro.precio_digital ?? libro.precio_fisico;
+
+  return `
+    <div class="articulo anuncio">
+      <a class="anuncio-link" href="${prefijo}libro.html?id=${encodeURIComponent(libro.id)}">
+        <span class="anuncio-etiqueta">Publicidad</span>
+        <img class="anuncio-portada" src="${prefijo}${libro.imagen}" alt="Portada de ${libro.titulo}">
+        <h3>${libro.titulo}</h3>
+        <p class="autor">${libro.autor}</p>
+        <p class="descripcion">${anuncio.texto}</p>
+        <div class="anuncio-pie">
+          <span class="anuncio-precio">Desde <b>$${desde}</b></span>
+          <span class="anuncio-cta">Ver en la tienda →</span>
+        </div>
+      </a>
+    </div>
+  `;
+}
+
+async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "", anuncioEn, anuncioLibro } = {}) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
@@ -198,7 +223,10 @@ async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "", an
 
   const tarjetas = articulos.map((a) => tarjetaArticulo(a, prefijo));
   if (anuncioEn != null && anuncioEn < tarjetas.length) {
-    tarjetas.splice(anuncioEn, 0, tarjetaAnuncioNativo());
+    const tarjetaAd = anuncioLibro
+      ? await tarjetaAnuncioLibro(anuncioLibro, prefijo)
+      : tarjetaAnuncioNativo();
+    tarjetas.splice(anuncioEn, 0, tarjetaAd);
   }
 
   contenedor.innerHTML = tarjetas.join("");
