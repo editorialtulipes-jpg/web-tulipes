@@ -1,4 +1,30 @@
 const COLORES_PORTADA = ["var(--accent)", "var(--accent-secundario)", "var(--text)"];
+const SITIO_BASE = "https://www.tulipeseditorial.com";
+
+function actualizarMetaSEO({ description, canonical, ogTitle, ogImage, ogType = "website" }) {
+  const set = (selector, attr, valor) => {
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, valor);
+  };
+  set('meta[name="description"]', "content", description);
+  set('link[rel="canonical"]', "href", canonical);
+  set('meta[property="og:type"]', "content", ogType);
+  set('meta[property="og:title"]', "content", ogTitle);
+  set('meta[property="og:description"]', "content", description);
+  set('meta[property="og:image"]', "content", ogImage);
+  set('meta[property="og:url"]', "content", canonical);
+}
+
+function inyectarJsonLd(datos) {
+  let el = document.querySelector('script[type="application/ld+json"][data-dinamico]');
+  if (!el) {
+    el = document.createElement("script");
+    el.type = "application/ld+json";
+    el.setAttribute("data-dinamico", "true");
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(datos);
+}
 
 function tarjetaLibro(libro, i, { comprable = true, mostrarPrecio = true } = {}) {
   const portada = libro.imagen
@@ -86,6 +112,40 @@ async function cargarDetalleLibro(contenedorId) {
   }
 
   document.title = `${libro.titulo} — Editorial Tulipes`;
+
+  const urlLibro = `${SITIO_BASE}/libro.html?id=${encodeURIComponent(libro.id)}`;
+  const imagenAbsoluta = libro.imagen ? `${SITIO_BASE}/${libro.imagen}` : `${SITIO_BASE}/assets/images/og-default.jpg`;
+  const descripcionSEO = libro.sinopsis && libro.sinopsis !== ""
+    ? libro.sinopsis.slice(0, 300)
+    : `${libro.titulo}, de ${libro.autor} — Editorial Tulipes.`;
+
+  actualizarMetaSEO({
+    description: descripcionSEO,
+    canonical: urlLibro,
+    ogTitle: `${libro.titulo} — Editorial Tulipes`,
+    ogImage: imagenAbsoluta,
+    ogType: "book",
+  });
+
+  inyectarJsonLd({
+    "@context": "https://schema.org",
+    "@type": "Book",
+    name: libro.titulo,
+    author: { "@type": "Person", name: libro.autor },
+    isbn: libro.isbn ?? undefined,
+    numberOfPages: typeof libro.paginas === "number" ? libro.paginas : undefined,
+    genre: libro.genero ?? undefined,
+    description: libro.sinopsis ?? undefined,
+    image: imagenAbsoluta,
+    inLanguage: "es",
+    offers: {
+      "@type": "Offer",
+      url: urlLibro,
+      priceCurrency: "MXN",
+      price: libro.precio_fisico ?? libro.precio_digital,
+      availability: "https://schema.org/InStock",
+    },
+  });
 
   const portada = libro.imagen
     ? `<img src="${libro.imagen}" alt="${libro.titulo}">`
@@ -204,6 +264,33 @@ async function cargarDetalleProducto(contenedorId) {
 
   const medios = producto.medios ?? [];
   const imagenPrincipal = producto.imagen ?? medios.find((m) => m.tipo === "imagen")?.src ?? "";
+
+  const urlProducto = `${SITIO_BASE}/producto.html?id=${encodeURIComponent(producto.id)}`;
+  const imagenAbsolutaProducto = imagenPrincipal ? `${SITIO_BASE}/${imagenPrincipal}` : `${SITIO_BASE}/assets/images/og-default.jpg`;
+
+  actualizarMetaSEO({
+    description: producto.descripcion ?? `${producto.titulo} — Editorial Tulipes.`,
+    canonical: urlProducto,
+    ogTitle: `${producto.titulo} — Editorial Tulipes`,
+    ogImage: imagenAbsolutaProducto,
+    ogType: "product",
+  });
+
+  inyectarJsonLd({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: producto.titulo,
+    description: producto.descripcion ?? undefined,
+    image: imagenAbsolutaProducto,
+    inLanguage: "es",
+    offers: {
+      "@type": "Offer",
+      url: urlProducto,
+      priceCurrency: "MXN",
+      price: producto.precio_fisico,
+      availability: "https://schema.org/InStock",
+    },
+  });
 
   const miniaturas = medios
     .map((m, i) => {
