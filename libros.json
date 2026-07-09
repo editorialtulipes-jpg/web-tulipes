@@ -38,10 +38,10 @@
     "precio_fisico": 200,
     "precio_digital": 60,
     "archivos_digitales": ["assets/digital/contragolpe.epub", "assets/digital/contragolpe.pdf"],
-    "isbn": "Pendiente",
-    "paginas": "Pendiente",
-    "genero": "Pendiente",
-    "sinopsis": "Sinopsis pendiente — agrega aquí una breve descripción del libro."
+    "isbn": "9786076948712",
+    "paginas": 144,
+    "genero": "Poesía",
+    "sinopsis": "Contragolpe es el primer libro de Esbeidi Lara (Xalapa, 1996), poeta y promotora de lectura.\n\nLicenciada en Letras y Derecho por la UV, maestra en Literatura Mexicana (UDG) y actual doctoranda en Literatura Hispánica por El Colegio de San Luis. Su obra ha sido publicada en revistas y antologías de México, España, Argentina y Perú. Un libro sobre la pelea, la resistencia y el amor."
   },
   {
     "id": "lectura-marina-archipielago",
