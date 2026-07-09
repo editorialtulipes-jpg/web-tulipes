@@ -3,10 +3,11 @@
     "id": "tote-crisantemos",
     "titulo": "Tote Crisantemos",
     "precio_fisico": 150,
-    "imagenes": [
-      "assets/images/tote-crisantemos-1.jpg",
-      "assets/images/tote-crisantemos-2.jpg",
-      "assets/images/tote-crisantemos-3.jpg"
+    "imagen": "assets/images/tote-crisantemos-1.jpg",
+    "medios": [
+      { "tipo": "imagen", "src": "assets/images/tote-crisantemos-1.jpg" },
+      { "tipo": "imagen", "src": "assets/images/tote-crisantemos-2.jpg" },
+      { "tipo": "video", "src": "assets/videos/tote-crisantemos.mp4", "poster": "assets/images/tote-crisantemos-3.jpg" }
     ],
     "disenadora": "Anaid Monroy, artista plástica y directora de arte de la editorial",
     "tecnica": "Serigrafía sobre manta",

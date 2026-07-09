@@ -1214,15 +1214,17 @@
 .galeria-principal {
   display: block;
   width: 100%;
-  padding: 0;
-  border: none;
-  background: none;
   cursor: zoom-in;
 }
 
-.galeria-principal img {
+.galeria-principal img,
+.galeria-principal video {
   width: 100%;
   display: block;
+}
+
+.galeria-principal.es-video {
+  cursor: default;
 }
 
 .galeria-miniaturas {
@@ -1231,6 +1233,7 @@
 }
 
 .galeria-miniatura {
+  position: relative;
   flex: 1;
   padding: 0;
   border: 2px solid transparent;
@@ -1245,6 +1248,18 @@
   display: block;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+}
+
+.galeria-miniatura-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
 }
 
 .galeria-miniatura:hover {

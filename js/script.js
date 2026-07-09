@@ -158,9 +158,8 @@ async function cargarDetalleLibro(contenedorId) {
 }
 
 function tarjetaProducto(producto) {
-  const imagen = producto.imagenes?.[0];
-  const portada = imagen
-    ? `<img src="${imagen}" alt="${producto.titulo}">`
+  const portada = producto.imagen
+    ? `<img src="${producto.imagen}" alt="${producto.titulo}">`
     : `<div class="portada-tipografica" style="background:var(--accent-secundario)">
          <span class="titulo-cubierta">${producto.titulo}</span>
        </div>`;
@@ -172,7 +171,7 @@ function tarjetaProducto(producto) {
         <h4>${producto.titulo}</h4>
       </a>
       <p class="precio">$${producto.precio_fisico}</p>
-      <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagen ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
+      <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${producto.imagen ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
     </section>
   `;
 }
@@ -203,25 +202,27 @@ async function cargarDetalleProducto(contenedorId) {
 
   document.title = `${producto.titulo} — Editorial Tulipes`;
 
-  const imagenes = producto.imagenes ?? [];
+  const medios = producto.medios ?? [];
+  const imagenPrincipal = producto.imagen ?? medios.find((m) => m.tipo === "imagen")?.src ?? "";
 
-  const miniaturas = imagenes
-    .map(
-      (img, i) => `
+  const miniaturas = medios
+    .map((m, i) => {
+      const miniSrc = m.tipo === "video" ? m.poster : m.src;
+      const iconoPlay = m.tipo === "video" ? `<span class="galeria-miniatura-play">▶</span>` : "";
+      return `
         <button class="galeria-miniatura${i === 0 ? " activa" : ""}" data-galeria-miniatura data-indice="${i}">
-          <img src="${img}" alt="Vista ${i + 1} de ${producto.titulo}">
+          <img src="${miniSrc}" alt="Vista ${i + 1} de ${producto.titulo}">
+          ${iconoPlay}
         </button>
-      `
-    )
+      `;
+    })
     .join("");
 
   contenedor.innerHTML = `
     <section class="libro detalle-libro detalle-producto">
       <div class="detalle-libro-portada">
         <div class="galeria-producto">
-          <button class="galeria-principal" data-zoom-abrir aria-label="Ver en pantalla completa">
-            <img src="${imagenes[0] ?? ""}" alt="${producto.titulo}" data-galeria-imagen-principal>
-          </button>
+          <div class="galeria-principal" data-galeria-principal></div>
           <div class="galeria-miniaturas">${miniaturas}</div>
         </div>
       </div>
@@ -233,7 +234,7 @@ async function cargarDetalleProducto(contenedorId) {
         </dl>
         <p class="sinopsis">${producto.descripcion ?? ""}</p>
         <p class="precio">$${producto.precio_fisico}</p>
-        <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagenes[0] ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
+        <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagenPrincipal}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
       </div>
     </section>
 
@@ -244,18 +245,30 @@ async function cargarDetalleProducto(contenedorId) {
   `;
 
   let indiceActual = 0;
+  const galeriaPrincipal = contenedor.querySelector("[data-galeria-principal]");
 
   function mostrarImagen(i) {
     indiceActual = i;
-    contenedor.querySelector("[data-galeria-imagen-principal]").src = imagenes[i];
+    const m = medios[i];
+
+    if (m.tipo === "video") {
+      galeriaPrincipal.innerHTML = `<video src="${m.src}" poster="${m.poster}" muted loop playsinline controls autoplay></video>`;
+      galeriaPrincipal.classList.add("es-video");
+    } else {
+      galeriaPrincipal.innerHTML = `<img src="${m.src}" alt="${producto.titulo}">`;
+      galeriaPrincipal.classList.remove("es-video");
+    }
+
     contenedor.querySelectorAll("[data-galeria-miniatura]").forEach((btn) => {
       btn.classList.toggle("activa", Number(btn.dataset.indice) === i);
     });
   }
 
   function abrirZoom() {
+    const m = medios[indiceActual];
+    if (m.tipo !== "imagen") return;
     const zoomImagen = contenedor.querySelector("[data-zoom-imagen]");
-    zoomImagen.src = imagenes[indiceActual];
+    zoomImagen.src = m.src;
     zoomImagen.alt = producto.titulo;
     contenedor.querySelector("[data-zoom-fondo]").classList.add("visible");
   }
@@ -267,7 +280,7 @@ async function cargarDetalleProducto(contenedorId) {
   contenedor.querySelectorAll("[data-galeria-miniatura]").forEach((btn) => {
     btn.addEventListener("click", () => mostrarImagen(Number(btn.dataset.indice)));
   });
-  contenedor.querySelector("[data-zoom-abrir]").addEventListener("click", abrirZoom);
+  galeriaPrincipal.addEventListener("click", abrirZoom);
   contenedor.querySelector("[data-zoom-cerrar]").addEventListener("click", cerrarZoom);
   contenedor.querySelector("[data-zoom-fondo]").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) cerrarZoom();
@@ -275,6 +288,8 @@ async function cargarDetalleProducto(contenedorId) {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") cerrarZoom();
   });
+
+  mostrarImagen(0);
 }
 
 function tarjetaArticulo(a, prefijo = "") {
