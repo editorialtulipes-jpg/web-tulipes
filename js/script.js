@@ -177,7 +177,16 @@ function tarjetaArticulo(a, prefijo = "") {
   `;
 }
 
-async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "" } = {}) {
+function tarjetaAnuncioNativo() {
+  return `
+    <div class="articulo ad-slot ad-slot--card">
+      <span class="ad-label">Publicidad</span>
+      <span class="ad-dims">Espacio disponible</span>
+    </div>
+  `;
+}
+
+async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "", anuncioEn } = {}) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
@@ -187,5 +196,10 @@ async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "" } =
   if (genero) articulos = articulos.filter((a) => a.genero === genero);
   if (excluir) articulos = articulos.filter((a) => a.slug !== excluir);
 
-  contenedor.innerHTML = articulos.map((a) => tarjetaArticulo(a, prefijo)).join("");
+  const tarjetas = articulos.map((a) => tarjetaArticulo(a, prefijo));
+  if (anuncioEn != null && anuncioEn < tarjetas.length) {
+    tarjetas.splice(anuncioEn, 0, tarjetaAnuncioNativo());
+  }
+
+  contenedor.innerHTML = tarjetas.join("");
 }
