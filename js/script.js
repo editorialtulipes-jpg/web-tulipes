@@ -157,6 +157,126 @@ async function cargarDetalleLibro(contenedorId) {
   contenedor.insertAdjacentHTML("afterend", otrosLibros);
 }
 
+function tarjetaProducto(producto) {
+  const imagen = producto.imagenes?.[0];
+  const portada = imagen
+    ? `<img src="${imagen}" alt="${producto.titulo}">`
+    : `<div class="portada-tipografica" style="background:var(--accent-secundario)">
+         <span class="titulo-cubierta">${producto.titulo}</span>
+       </div>`;
+
+  return `
+    <section class="libro">
+      <a class="libro-enlace" href="producto.html?id=${encodeURIComponent(producto.id)}">
+        ${portada}
+        <h4>${producto.titulo}</h4>
+      </a>
+      <p class="precio">$${producto.precio_fisico}</p>
+      <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagen ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
+    </section>
+  `;
+}
+
+async function cargarProductos(contenedorId) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return;
+
+  const res = await fetch("productos.json");
+  const productos = await res.json();
+
+  contenedor.innerHTML = productos.map((p) => tarjetaProducto(p)).join("");
+}
+
+async function cargarDetalleProducto(contenedorId) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return;
+
+  const id = new URLSearchParams(window.location.search).get("id");
+  const res = await fetch("productos.json");
+  const productos = await res.json();
+  const producto = productos.find((p) => p.id === id);
+
+  if (!producto) {
+    contenedor.innerHTML = `<p>No encontramos ese producto. <a href="Catalogo.html">Volver a la tienda</a>.</p>`;
+    return;
+  }
+
+  document.title = `${producto.titulo} — Editorial Tulipes`;
+
+  const imagenes = producto.imagenes ?? [];
+
+  const miniaturas = imagenes
+    .map(
+      (img, i) => `
+        <button class="galeria-miniatura${i === 0 ? " activa" : ""}" data-galeria-miniatura data-indice="${i}">
+          <img src="${img}" alt="Vista ${i + 1} de ${producto.titulo}">
+        </button>
+      `
+    )
+    .join("");
+
+  contenedor.innerHTML = `
+    <section class="libro detalle-libro detalle-producto">
+      <div class="detalle-libro-portada">
+        <div class="galeria-producto">
+          <button class="galeria-principal" data-zoom-abrir aria-label="Ver en pantalla completa">
+            <img src="${imagenes[0] ?? ""}" alt="${producto.titulo}" data-galeria-imagen-principal>
+          </button>
+          <div class="galeria-miniaturas">${miniaturas}</div>
+        </div>
+      </div>
+      <div class="detalle-libro-info">
+        <h1>${producto.titulo}</h1>
+        <dl class="ficha-tecnica">
+          <div><dt>Diseño</dt><dd>${producto.disenadora}</dd></div>
+          <div><dt>Técnica</dt><dd>${producto.tecnica}</dd></div>
+        </dl>
+        <p class="sinopsis">${producto.descripcion ?? ""}</p>
+        <p class="precio">$${producto.precio_fisico}</p>
+        <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagenes[0] ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
+      </div>
+    </section>
+
+    <div class="zoom-fondo" data-zoom-fondo>
+      <button class="zoom-cerrar" data-zoom-cerrar aria-label="Cerrar">&times;</button>
+      <img class="zoom-imagen" data-zoom-imagen src="" alt="">
+    </div>
+  `;
+
+  let indiceActual = 0;
+
+  function mostrarImagen(i) {
+    indiceActual = i;
+    contenedor.querySelector("[data-galeria-imagen-principal]").src = imagenes[i];
+    contenedor.querySelectorAll("[data-galeria-miniatura]").forEach((btn) => {
+      btn.classList.toggle("activa", Number(btn.dataset.indice) === i);
+    });
+  }
+
+  function abrirZoom() {
+    const zoomImagen = contenedor.querySelector("[data-zoom-imagen]");
+    zoomImagen.src = imagenes[indiceActual];
+    zoomImagen.alt = producto.titulo;
+    contenedor.querySelector("[data-zoom-fondo]").classList.add("visible");
+  }
+
+  function cerrarZoom() {
+    contenedor.querySelector("[data-zoom-fondo]").classList.remove("visible");
+  }
+
+  contenedor.querySelectorAll("[data-galeria-miniatura]").forEach((btn) => {
+    btn.addEventListener("click", () => mostrarImagen(Number(btn.dataset.indice)));
+  });
+  contenedor.querySelector("[data-zoom-abrir]").addEventListener("click", abrirZoom);
+  contenedor.querySelector("[data-zoom-cerrar]").addEventListener("click", cerrarZoom);
+  contenedor.querySelector("[data-zoom-fondo]").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) cerrarZoom();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") cerrarZoom();
+  });
+}
+
 function tarjetaArticulo(a, prefijo = "") {
   const imagenTag = a.imagen
     ? `<img src="${prefijo}${a.imagen}" alt="imagen del articulo">`

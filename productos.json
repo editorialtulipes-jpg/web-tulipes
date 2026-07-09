@@ -1,0 +1,15 @@
+[
+  {
+    "id": "tote-crisantemos",
+    "titulo": "Tote Crisantemos",
+    "precio_fisico": 150,
+    "imagenes": [
+      "assets/images/tote-crisantemos-1.jpg",
+      "assets/images/tote-crisantemos-2.jpg",
+      "assets/images/tote-crisantemos-3.jpg"
+    ],
+    "disenadora": "Anaid Monroy, artista plástica y directora de arte de la editorial",
+    "tecnica": "Serigrafía sobre manta",
+    "descripcion": "Diseño exclusivo de la edición FIL: único e irrepetible, no se vuelve a imprimir en ninguna otra tirada."
+  }
+]

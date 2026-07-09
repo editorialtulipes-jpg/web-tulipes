@@ -1,6 +1,9 @@
 const Stripe = require("stripe");
 const libros = require("../../libros.json");
+const productos = require("../../productos.json");
 const { construirParametrosSesion, ErrorValidacion } = require("../../lib/checkout-shared");
+
+const catalogo = [...libros, ...productos];
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
@@ -16,7 +19,7 @@ exports.handler = async (event) => {
 
   let params;
   try {
-    params = construirParametrosSesion({ items, zona, libros });
+    params = construirParametrosSesion({ items, zona, libros: catalogo });
   } catch (err) {
     if (err instanceof ErrorValidacion) {
       return { statusCode: 400, body: err.message };

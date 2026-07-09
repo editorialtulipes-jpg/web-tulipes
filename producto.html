@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda — Editorial Tulipes</title>
+  <title>Editorial Tulipes</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/svg+xml" href="assets/images/logo-tulipes.svg">
 </head>
@@ -26,20 +26,9 @@
   </div>
 </header>
 
-<section class="hero">
-  <h2>Tienda</h2>
-  <p>Ediciones artesanales, directo del taller.</p>
-</section>
+<a href="Catalogo.html" class="back-link" style="margin-left:5%">← Volver a la tienda</a>
 
-<section class="catalogo">
-  <h3>Todo nuestro trabajo</h3>
-  <div class="grid" id="contenedor-libros"></div>
-</section>
-
-<section class="catalogo">
-  <h3>Totes</h3>
-  <div class="grid" id="contenedor-productos"></div>
-</section>
+<div id="detalle-producto"></div>
 
 <footer>
   <p>© 2026 Editorial Tulipes — Guadalajara, México</p>
@@ -48,10 +37,7 @@
 
 <script src="js/menu.js"></script>
 <script src="js/script.js"></script>
-<script>
-  cargarLibros("contenedor-libros");
-  cargarProductos("contenedor-productos");
-</script>
+<script>cargarDetalleProducto("detalle-producto");</script>
 
 
 <div class="carrito-fondo" data-carrito-fondo></div>
