@@ -1043,6 +1043,7 @@
 .sinopsis {
   line-height: 1.7;
   margin-bottom: 1rem;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 600px) {
