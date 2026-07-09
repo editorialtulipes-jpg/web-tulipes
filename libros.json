@@ -23,10 +23,10 @@
     "imagen": "assets/images/lectura-marina-arrecife.jpg",
     "link": "#",
     "precio_fisico": 150,
-    "isbn": "Pendiente",
-    "paginas": "Pendiente",
-    "genero": "Pendiente",
-    "sinopsis": "Sinopsis pendiente — agrega aquí una breve descripción del libro."
+    "isbn": "En trámite",
+    "paginas": 68,
+    "genero": "Poesía",
+    "sinopsis": "Tercera edición de nuestra ya tradicional Lectura Marina, una selección de voces jóvenes reunidas por Natalia Mariposa. En esta entrega participan Elizabeth Mejía, Luis Ham, Aurora Lucero y Sofía Vega, cuatro poéticas distintas que conversan bajo el mismo oleaje."
   },
   {
     "id": "contragolpe",
