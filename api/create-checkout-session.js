@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
 
   let params;
   try {
-    params = construirParametrosSesion({ items, zona, libros: catalogo });
+    params = await construirParametrosSesion({ items, zona, libros: catalogo });
   } catch (err) {
     if (err instanceof ErrorValidacion) {
       res.status(400).send(err.message);

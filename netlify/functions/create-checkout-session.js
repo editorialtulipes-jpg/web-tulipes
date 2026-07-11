@@ -19,7 +19,7 @@ exports.handler = async (event) => {
 
   let params;
   try {
-    params = construirParametrosSesion({ items, zona, libros: catalogo });
+    params = await construirParametrosSesion({ items, zona, libros: catalogo });
   } catch (err) {
     if (err instanceof ErrorValidacion) {
       return { statusCode: 400, body: err.message };

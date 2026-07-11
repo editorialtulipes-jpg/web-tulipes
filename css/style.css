@@ -858,6 +858,17 @@
   font-weight: 600;
 }
 
+.libro .precio-agotado {
+  color: var(--muted);
+}
+
+.nota-agotado {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-style: italic;
+  margin: 0.3rem 0 0.6rem;
+}
+
 .portada-tipografica {
   width: 100%;
   max-width: 180px;

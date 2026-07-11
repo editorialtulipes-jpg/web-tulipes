@@ -198,7 +198,7 @@
 
       const tarjeta = boton.closest(".libro");
       const radioMarcado = tarjeta?.querySelector('[data-formato-opciones] input[type="radio"]:checked');
-      const formato = radioMarcado ? radioMarcado.value : "fisico";
+      const formato = radioMarcado ? radioMarcado.value : (boton.dataset.formato || "fisico");
       const precio = radioMarcado
         ? Number(radioMarcado.dataset.precio)
         : Number(boton.dataset.precioFisico);

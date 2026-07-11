@@ -2,6 +2,7 @@ const Stripe = require("stripe");
 const path = require("path");
 const libros = require("../../libros.json");
 const { enviarLibrosDigitales } = require("../../lib/entrega-digital");
+const { descontarStock, marcarProcesado } = require("../../lib/inventario");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
@@ -26,6 +27,14 @@ exports.handler = async (event) => {
     const session = evento.data.object;
     const email = session.customer_details?.email;
     const itemsDigitales = session.metadata?.digital_items ? JSON.parse(session.metadata.digital_items) : [];
+    const itemsFisicos = session.metadata?.physical_items ? JSON.parse(session.metadata.physical_items) : [];
+
+    if (itemsFisicos.length > 0) {
+      const esNuevo = await marcarProcesado(`stock:${session.id}`);
+      if (esNuevo) {
+        await Promise.all(itemsFisicos.map((item) => descontarStock(item.id, item.cantidad)));
+      }
+    }
 
     if (email && itemsDigitales.length > 0) {
       await enviarLibrosDigitales({ email, items: itemsDigitales, libros, projectRoot: path.join(__dirname, "../..") });

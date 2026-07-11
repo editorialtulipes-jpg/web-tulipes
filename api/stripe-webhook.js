@@ -2,6 +2,7 @@ const Stripe = require("stripe");
 const path = require("path");
 const libros = require("../libros.json");
 const { enviarLibrosDigitales } = require("../lib/entrega-digital");
+const { descontarStock, marcarProcesado } = require("../lib/inventario");
 
 function leerRawBody(req) {
   return new Promise((resolve, reject) => {
@@ -37,6 +38,16 @@ async function handler(req, res) {
     const session = evento.data.object;
     const email = session.customer_details?.email;
     const itemsDigitales = session.metadata?.digital_items ? JSON.parse(session.metadata.digital_items) : [];
+    const itemsFisicos = session.metadata?.physical_items ? JSON.parse(session.metadata.physical_items) : [];
+
+    if (itemsFisicos.length > 0) {
+      // Idempotente: si Stripe reintenta este webhook (ej. porque el envío
+      // digital falló abajo y respondimos 500), no se vuelve a descontar.
+      const esNuevo = await marcarProcesado(`stock:${session.id}`);
+      if (esNuevo) {
+        await Promise.all(itemsFisicos.map((item) => descontarStock(item.id, item.cantidad)));
+      }
+    }
 
     if (email && itemsDigitales.length > 0) {
       // Si esto falla (ej. falta RESEND_API_KEY), respondemos 500 para que

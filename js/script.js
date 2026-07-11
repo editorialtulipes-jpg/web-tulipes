@@ -26,30 +26,38 @@ function inyectarJsonLd(datos) {
   el.textContent = JSON.stringify(datos);
 }
 
-function tarjetaLibro(libro, i, { comprable = true, mostrarPrecio = true } = {}) {
-  const portada = libro.imagen
-    ? `<img src="${libro.imagen}" alt="${libro.titulo}">`
-    : `<div class="portada-tipografica" style="background:${COLORES_PORTADA[i % COLORES_PORTADA.length]}">
-         <span class="titulo-cubierta">${libro.titulo}</span>
-       </div>`;
+async function obtenerInventario() {
+  try {
+    const res = await fetch("/api/inventario");
+    if (!res.ok) return {};
+    return await res.json();
+  } catch {
+    return {};
+  }
+}
 
-  const subtitulo = libro.subtitulo
-    ? `<p class="subtitulo">${libro.subtitulo}</p>`
-    : "";
-
-  const antologador = libro.antologador
-    ? `<p class="antologador">Antologadora: ${libro.antologador}</p>`
-    : "";
-
+// Calcula qué mostrar para comprar un libro dado su stock físico actual.
+// stock === undefined significa "no controlado" (sin límite conocido).
+function bloqueCompraLibro(libro, stock, { comprable = true, mostrarPrecio = true } = {}) {
   const tieneDigital = libro.precio_digital != null && libro.archivos_digitales?.length > 0;
-  const tieneFisico = libro.precio_fisico != null;
+  const tieneFisicoReal = libro.precio_fisico != null;
+  const agotado = tieneFisicoReal && typeof stock === "number" && stock <= 0;
+  const tieneFisico = tieneFisicoReal && !agotado;
+
+  const notaAgotado = agotado
+    ? `<p class="nota-agotado">Edición física agotada${tieneDigital ? " — disponible en digital" : ""}</p>`
+    : "";
 
   const mostrarSelectorFormato = comprable && tieneFisico && tieneDigital;
 
   const precio = mostrarPrecio && !mostrarSelectorFormato
     ? (tieneFisico
         ? `<p class="precio">$${libro.precio_fisico}</p>`
-        : `<p class="precio">Precio a consultar</p>`)
+        : tieneDigital
+          ? `<p class="precio">$${libro.precio_digital}</p>`
+          : agotado
+            ? `<p class="precio precio-agotado">Agotado</p>`
+            : `<p class="precio">Precio a consultar</p>`)
     : "";
 
   const formatoOpciones = mostrarSelectorFormato
@@ -65,9 +73,30 @@ function tarjetaLibro(libro, i, { comprable = true, mostrarPrecio = true } = {})
        </div>`
     : "";
 
-  const botonAgregar = comprable && tieneFisico
-    ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-imagen="${libro.imagen}" data-precio-fisico="${libro.precio_fisico}">Agregar al carrito</button>`
+  const formatoUnicoDigital = !tieneFisico && tieneDigital;
+  const botonAgregar = comprable && (tieneFisico || tieneDigital)
+    ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-imagen="${libro.imagen ?? ""}"${formatoUnicoDigital ? ` data-formato="digital"` : ""} data-precio-fisico="${tieneFisico ? libro.precio_fisico : libro.precio_digital}">Agregar al carrito</button>`
     : "";
+
+  return { notaAgotado, precio, formatoOpciones, botonAgregar };
+}
+
+function tarjetaLibro(libro, i, { comprable = true, mostrarPrecio = true, stock } = {}) {
+  const portada = libro.imagen
+    ? `<img src="${libro.imagen}" alt="${libro.titulo}">`
+    : `<div class="portada-tipografica" style="background:${COLORES_PORTADA[i % COLORES_PORTADA.length]}">
+         <span class="titulo-cubierta">${libro.titulo}</span>
+       </div>`;
+
+  const subtitulo = libro.subtitulo
+    ? `<p class="subtitulo">${libro.subtitulo}</p>`
+    : "";
+
+  const antologador = libro.antologador
+    ? `<p class="antologador">Antologadora: ${libro.antologador}</p>`
+    : "";
+
+  const { notaAgotado, precio, formatoOpciones, botonAgregar } = bloqueCompraLibro(libro, stock, { comprable, mostrarPrecio });
 
   return `
     <section class="libro">
@@ -78,6 +107,7 @@ function tarjetaLibro(libro, i, { comprable = true, mostrarPrecio = true } = {})
         <span>${libro.autor}</span>
         ${antologador}
       </a>
+      ${notaAgotado}
       ${precio}
       ${formatoOpciones}
       ${botonAgregar}
@@ -89,11 +119,11 @@ async function cargarLibros(contenedorId, { comprable = true, mostrarPrecio = tr
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
-  const res = await fetch("libros.json");
+  const [res, inventario] = await Promise.all([fetch("libros.json"), obtenerInventario()]);
   const libros = await res.json();
 
   contenedor.innerHTML = libros
-    .map((libro, i) => tarjetaLibro(libro, i, { comprable, mostrarPrecio }))
+    .map((libro, i) => tarjetaLibro(libro, i, { comprable, mostrarPrecio, stock: inventario[libro.id] }))
     .join("");
 }
 
@@ -102,7 +132,7 @@ async function cargarDetalleLibro(contenedorId) {
   if (!contenedor) return;
 
   const id = new URLSearchParams(window.location.search).get("id");
-  const res = await fetch("libros.json");
+  const [res, inventario] = await Promise.all([fetch("libros.json"), obtenerInventario()]);
   const libros = await res.json();
   const libro = libros.find((l) => l.id === id);
 
@@ -110,6 +140,9 @@ async function cargarDetalleLibro(contenedorId) {
     contenedor.innerHTML = `<p>No encontramos ese libro. <a href="Catalogo.html">Volver a la tienda</a>.</p>`;
     return;
   }
+
+  const stock = inventario[libro.id];
+  const agotadoFisico = typeof stock === "number" && stock <= 0;
 
   document.title = `${libro.titulo} — Editorial Tulipes`;
 
@@ -142,8 +175,10 @@ async function cargarDetalleLibro(contenedorId) {
       "@type": "Offer",
       url: urlLibro,
       priceCurrency: "MXN",
-      price: libro.precio_fisico ?? libro.precio_digital,
-      availability: "https://schema.org/InStock",
+      price: agotadoFisico ? libro.precio_digital ?? libro.precio_fisico : libro.precio_fisico ?? libro.precio_digital,
+      availability: agotadoFisico && libro.precio_digital == null
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
     },
   });
 
@@ -156,39 +191,14 @@ async function cargarDetalleLibro(contenedorId) {
   const subtitulo = libro.subtitulo ? `<p class="subtitulo">${libro.subtitulo}</p>` : "";
   const antologador = libro.antologador ? `<p class="antologador">Antologadora: ${libro.antologador}</p>` : "";
 
-  const tieneDigital = libro.precio_digital != null && libro.archivos_digitales?.length > 0;
-  const tieneFisico = libro.precio_fisico != null;
-  const mostrarSelectorFormato = tieneFisico && tieneDigital;
-
-  const precio = !mostrarSelectorFormato
-    ? (tieneFisico
-        ? `<p class="precio">$${libro.precio_fisico}</p>`
-        : `<p class="precio">Precio a consultar</p>`)
-    : "";
-
-  const formatoOpciones = mostrarSelectorFormato
-    ? `<div class="formato-opciones" data-formato-opciones>
-         <label class="formato-opcion">
-           <input type="radio" name="formato-${libro.id}" value="fisico" data-precio="${libro.precio_fisico}" checked>
-           <span>Físico<b>$${libro.precio_fisico}</b></span>
-         </label>
-         <label class="formato-opcion">
-           <input type="radio" name="formato-${libro.id}" value="digital" data-precio="${libro.precio_digital}">
-           <span>Digital<b>$${libro.precio_digital}</b></span>
-         </label>
-       </div>`
-    : "";
-
-  const botonAgregar = tieneFisico
-    ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-imagen="${libro.imagen}" data-precio-fisico="${libro.precio_fisico}">Agregar al carrito</button>`
-    : "";
+  const { notaAgotado, precio, formatoOpciones, botonAgregar } = bloqueCompraLibro(libro, stock);
 
   const otros = libros.filter((l) => l.id !== libro.id);
   const otrosLibros = otros.length
     ? `<section class="catalogo">
          <h3>Más libros</h3>
          <div class="grid">
-           ${otros.map((l, i) => tarjetaLibro(l, i, { comprable: true, mostrarPrecio: true })).join("")}
+           ${otros.map((l, i) => tarjetaLibro(l, i, { comprable: true, mostrarPrecio: true, stock: inventario[l.id] })).join("")}
          </div>
        </section>`
     : "";
@@ -207,6 +217,7 @@ async function cargarDetalleLibro(contenedorId) {
           <div><dt>Género</dt><dd>${libro.genero ?? "Pendiente"}</dd></div>
         </dl>
         <p class="sinopsis">${libro.sinopsis ?? ""}</p>
+        ${notaAgotado}
         ${precio}
         ${formatoOpciones}
         ${botonAgregar}
@@ -217,12 +228,20 @@ async function cargarDetalleLibro(contenedorId) {
   contenedor.insertAdjacentHTML("afterend", otrosLibros);
 }
 
-function tarjetaProducto(producto) {
+function tarjetaProducto(producto, stock) {
   const portada = producto.imagen
     ? `<img src="${producto.imagen}" alt="${producto.titulo}">`
     : `<div class="portada-tipografica" style="background:var(--accent-secundario)">
          <span class="titulo-cubierta">${producto.titulo}</span>
        </div>`;
+
+  const agotado = typeof stock === "number" && stock <= 0;
+  const precio = agotado
+    ? `<p class="precio precio-agotado">Agotado</p>`
+    : `<p class="precio">$${producto.precio_fisico}</p>`;
+  const botonAgregar = agotado
+    ? ""
+    : `<button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${producto.imagen ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>`;
 
   return `
     <section class="libro">
@@ -230,8 +249,8 @@ function tarjetaProducto(producto) {
         ${portada}
         <h4>${producto.titulo}</h4>
       </a>
-      <p class="precio">$${producto.precio_fisico}</p>
-      <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${producto.imagen ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
+      ${precio}
+      ${botonAgregar}
     </section>
   `;
 }
@@ -240,10 +259,10 @@ async function cargarProductos(contenedorId) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
-  const res = await fetch("productos.json");
+  const [res, inventario] = await Promise.all([fetch("productos.json"), obtenerInventario()]);
   const productos = await res.json();
 
-  contenedor.innerHTML = productos.map((p) => tarjetaProducto(p)).join("");
+  contenedor.innerHTML = productos.map((p) => tarjetaProducto(p, inventario[p.id])).join("");
 }
 
 async function cargarDetalleProducto(contenedorId) {
@@ -251,7 +270,7 @@ async function cargarDetalleProducto(contenedorId) {
   if (!contenedor) return;
 
   const id = new URLSearchParams(window.location.search).get("id");
-  const res = await fetch("productos.json");
+  const [res, inventario] = await Promise.all([fetch("productos.json"), obtenerInventario()]);
   const productos = await res.json();
   const producto = productos.find((p) => p.id === id);
 
@@ -259,6 +278,9 @@ async function cargarDetalleProducto(contenedorId) {
     contenedor.innerHTML = `<p>No encontramos ese producto. <a href="Catalogo.html">Volver a la tienda</a>.</p>`;
     return;
   }
+
+  const stock = inventario[producto.id];
+  const agotado = typeof stock === "number" && stock <= 0;
 
   document.title = `${producto.titulo} — Editorial Tulipes`;
 
@@ -288,7 +310,7 @@ async function cargarDetalleProducto(contenedorId) {
       url: urlProducto,
       priceCurrency: "MXN",
       price: producto.precio_fisico,
-      availability: "https://schema.org/InStock",
+      availability: agotado ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
     },
   });
 
@@ -320,8 +342,11 @@ async function cargarDetalleProducto(contenedorId) {
           <div><dt>Técnica</dt><dd>${producto.tecnica}</dd></div>
         </dl>
         <p class="sinopsis">${producto.descripcion ?? ""}</p>
-        <p class="precio">$${producto.precio_fisico}</p>
-        <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagenPrincipal}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>
+        ${agotado
+          ? `<p class="precio precio-agotado">Agotado</p>`
+          : `<p class="precio">$${producto.precio_fisico}</p>
+             <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagenPrincipal}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>`
+        }
       </div>
     </section>
 
