@@ -1,6 +1,6 @@
 const Stripe = require("stripe");
 const path = require("path");
-const libros = require("../../data/libros.json");
+const libros = require("../../libros.json");
 const { enviarLibrosDigitales } = require("../../lib/entrega-digital");
 const { descontarStock, marcarProcesado } = require("../../lib/inventario");
 

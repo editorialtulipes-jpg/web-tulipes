@@ -1,19 +1,5 @@
 {
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/", "destination": "/paginas/index.html" },
-    { "source": "/Catalogo", "destination": "/paginas/Catalogo.html" },
-    { "source": "/autores", "destination": "/paginas/autores.html" },
-    { "source": "/contacto", "destination": "/paginas/contacto.html" },
-    { "source": "/genero", "destination": "/paginas/genero.html" },
-    { "source": "/libro", "destination": "/paginas/libro.html" },
-    { "source": "/pago-cancelado", "destination": "/paginas/pago-cancelado.html" },
-    { "source": "/pago-exitoso", "destination": "/paginas/pago-exitoso.html" },
-    { "source": "/privacidad", "destination": "/paginas/privacidad.html" },
-    { "source": "/producto", "destination": "/paginas/producto.html" },
-    { "source": "/revista", "destination": "/paginas/revista.html" },
-    { "source": "/sobre", "destination": "/paginas/sobre.html" }
-  ],
   "functions": {
     "api/stripe-webhook.js": {
       "includeFiles": "assets/digital/**"
