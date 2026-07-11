@@ -32,8 +32,8 @@ exports.handler = async (event) => {
 
   const session = await stripe.checkout.sessions.create({
     ...params,
-    success_url: `${origin}/pago-exitoso.html`,
-    cancel_url: `${origin}/pago-cancelado.html`,
+    success_url: `${origin}/pago-exitoso`,
+    cancel_url: `${origin}/pago-cancelado`,
   });
 
   return {

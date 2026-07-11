@@ -100,7 +100,7 @@ function tarjetaLibro(libro, i, { comprable = true, mostrarPrecio = true, stock 
 
   return `
     <section class="libro">
-      <a class="libro-enlace" href="libro.html?id=${encodeURIComponent(libro.id)}">
+      <a class="libro-enlace" href="libro?id=${encodeURIComponent(libro.id)}">
         ${portada}
         <h4>${libro.titulo}</h4>
         ${subtitulo}
@@ -137,7 +137,7 @@ async function cargarDetalleLibro(contenedorId) {
   const libro = libros.find((l) => l.id === id);
 
   if (!libro) {
-    contenedor.innerHTML = `<p>No encontramos ese libro. <a href="Catalogo.html">Volver a la tienda</a>.</p>`;
+    contenedor.innerHTML = `<p>No encontramos ese libro. <a href="Catalogo">Volver a la tienda</a>.</p>`;
     return;
   }
 
@@ -146,7 +146,7 @@ async function cargarDetalleLibro(contenedorId) {
 
   document.title = `${libro.titulo} — Editorial Tulipes`;
 
-  const urlLibro = `${SITIO_BASE}/libro.html?id=${encodeURIComponent(libro.id)}`;
+  const urlLibro = `${SITIO_BASE}/libro?id=${encodeURIComponent(libro.id)}`;
   const imagenAbsoluta = libro.imagen ? `${SITIO_BASE}/${libro.imagen}` : `${SITIO_BASE}/assets/images/og-default.jpg`;
   const descripcionSEO = libro.sinopsis && libro.sinopsis !== ""
     ? libro.sinopsis.slice(0, 300)
@@ -245,7 +245,7 @@ function tarjetaProducto(producto, stock) {
 
   return `
     <section class="libro">
-      <a class="libro-enlace" href="producto.html?id=${encodeURIComponent(producto.id)}">
+      <a class="libro-enlace" href="producto?id=${encodeURIComponent(producto.id)}">
         ${portada}
         <h4>${producto.titulo}</h4>
       </a>
@@ -275,7 +275,7 @@ async function cargarDetalleProducto(contenedorId) {
   const producto = productos.find((p) => p.id === id);
 
   if (!producto) {
-    contenedor.innerHTML = `<p>No encontramos ese producto. <a href="Catalogo.html">Volver a la tienda</a>.</p>`;
+    contenedor.innerHTML = `<p>No encontramos ese producto. <a href="Catalogo">Volver a la tienda</a>.</p>`;
     return;
   }
 
@@ -287,7 +287,7 @@ async function cargarDetalleProducto(contenedorId) {
   const medios = producto.medios ?? [];
   const imagenPrincipal = producto.imagen ?? medios.find((m) => m.tipo === "imagen")?.src ?? "";
 
-  const urlProducto = `${SITIO_BASE}/producto.html?id=${encodeURIComponent(producto.id)}`;
+  const urlProducto = `${SITIO_BASE}/producto?id=${encodeURIComponent(producto.id)}`;
   const imagenAbsolutaProducto = imagenPrincipal ? `${SITIO_BASE}/${imagenPrincipal}` : `${SITIO_BASE}/assets/images/og-default.jpg`;
 
   actualizarMetaSEO({
@@ -432,9 +432,9 @@ function tarjetaArticulo(a, prefijo = "") {
   return `
     <div class="articulo">
       ${imagenTag}
-      <a class="etiqueta-genero" href="${prefijo}genero.html?tipo=${encodeURIComponent(a.genero)}">${a.genero}</a>
+      <a class="etiqueta-genero" href="${prefijo}genero?tipo=${encodeURIComponent(a.genero)}">${a.genero}</a>
       <h3>
-        <a href="${prefijo}textos/${a.slug}.html">${a.titulo}</a>
+        <a href="${prefijo}textos/${a.slug}">${a.titulo}</a>
       </h3>
       <p class="autor">${a.autor}</p>
       <p class="descripcion">
@@ -463,7 +463,7 @@ async function tarjetaAnuncioLibro(anuncio, prefijo = "") {
 
   return `
     <div class="articulo anuncio">
-      <a class="anuncio-link" href="${prefijo}libro.html?id=${encodeURIComponent(libro.id)}">
+      <a class="anuncio-link" href="${prefijo}libro?id=${encodeURIComponent(libro.id)}">
         <span class="anuncio-etiqueta">Publicidad</span>
         <img class="anuncio-portada" src="${prefijo}${libro.imagen}" alt="Portada de ${libro.titulo}">
         <h3>${libro.titulo}</h3>

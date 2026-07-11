@@ -1,4 +1,5 @@
 {
+  "cleanUrls": true,
   "functions": {
     "api/stripe-webhook.js": {
       "includeFiles": "assets/digital/**"

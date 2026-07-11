@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /pago-exitoso.html
-Disallow: /pago-cancelado.html
+Disallow: /pago-exitoso
+Disallow: /pago-cancelado
 
 Sitemap: https://www.tulipeseditorial.com/sitemap.xml
