@@ -119,7 +119,7 @@ async function cargarLibros(contenedorId, { comprable = true, mostrarPrecio = tr
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
-  const [res, inventario] = await Promise.all([fetch("libros.json"), obtenerInventario()]);
+  const [res, inventario] = await Promise.all([fetch("data/libros.json"), obtenerInventario()]);
   const libros = await res.json();
 
   contenedor.innerHTML = libros
@@ -132,7 +132,7 @@ async function cargarDetalleLibro(contenedorId) {
   if (!contenedor) return;
 
   const id = new URLSearchParams(window.location.search).get("id");
-  const [res, inventario] = await Promise.all([fetch("libros.json"), obtenerInventario()]);
+  const [res, inventario] = await Promise.all([fetch("data/libros.json"), obtenerInventario()]);
   const libros = await res.json();
   const libro = libros.find((l) => l.id === id);
 
@@ -259,7 +259,7 @@ async function cargarProductos(contenedorId) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
-  const [res, inventario] = await Promise.all([fetch("productos.json"), obtenerInventario()]);
+  const [res, inventario] = await Promise.all([fetch("data/productos.json"), obtenerInventario()]);
   const productos = await res.json();
 
   contenedor.innerHTML = productos.map((p) => tarjetaProducto(p, inventario[p.id])).join("");
@@ -270,7 +270,7 @@ async function cargarDetalleProducto(contenedorId) {
   if (!contenedor) return;
 
   const id = new URLSearchParams(window.location.search).get("id");
-  const [res, inventario] = await Promise.all([fetch("productos.json"), obtenerInventario()]);
+  const [res, inventario] = await Promise.all([fetch("data/productos.json"), obtenerInventario()]);
   const productos = await res.json();
   const producto = productos.find((p) => p.id === id);
 
@@ -454,7 +454,7 @@ function tarjetaAnuncioNativo() {
 }
 
 async function tarjetaAnuncioLibro(anuncio, prefijo = "") {
-  const res = await fetch(`${prefijo}libros.json`);
+  const res = await fetch(`${prefijo}data/libros.json`);
   const libros = await res.json();
   const libro = libros.find((l) => l.id === anuncio.id);
   if (!libro) return tarjetaAnuncioNativo();
@@ -482,7 +482,7 @@ async function cargarArticulos(contenedorId, { genero, excluir, prefijo = "", an
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
-  const res = await fetch(`${prefijo}revista.json`);
+  const res = await fetch(`${prefijo}data/revista.json`);
   let articulos = await res.json();
 
   if (genero) articulos = articulos.filter((a) => a.genero === genero);

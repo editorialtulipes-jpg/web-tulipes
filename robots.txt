@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /pago-exitoso
 Disallow: /pago-cancelado
+Disallow: /paginas/
+Disallow: /data/
 
 Sitemap: https://www.tulipeseditorial.com/sitemap.xml
