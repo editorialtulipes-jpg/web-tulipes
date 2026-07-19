@@ -5,14 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editorial Tulipes</title>
   <meta name="description" content="Descubre los libros de Editorial Tulipes: narrativa, poesía y ensayo en ediciones artesanales.">
-  <link rel="canonical" href="https://www.tulipeseditorial.com/Catalogo">
+  <link rel="canonical" href="https://www.tulipeseditorial.com/libro">
   <meta property="og:type" content="book">
   <meta property="og:title" content="Editorial Tulipes">
   <meta property="og:description" content="Descubre los libros de Editorial Tulipes: narrativa, poesía y ensayo en ediciones artesanales.">
   <meta property="og:image" content="https://www.tulipeseditorial.com/assets/images/og-default.jpg">
-  <meta property="og:url" content="https://www.tulipeseditorial.com/Catalogo">
+  <meta property="og:url" content="https://www.tulipeseditorial.com/libro">
   <meta property="og:locale" content="es_MX">
   <meta name="twitter:card" content="summary_large_image">
+  <script>
+    (function () {
+      if (!location.search) return;
+      var url = "https://www.tulipeseditorial.com/libro" + location.search;
+      document.querySelector('link[rel="canonical"]').setAttribute("href", url);
+      document.querySelector('meta[property="og:url"]').setAttribute("content", url);
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/svg+xml" href="assets/images/logo-tulipes.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
