@@ -9,7 +9,6 @@
     gdl: { nombre: "Guadalajara y zona metropolitana", precio: 70 },
     jalisco: { nombre: "Resto de Jalisco", precio: 100 },
     nacional: { nombre: "Resto de México", precio: 150 },
-    internacional: { nombre: "Envío internacional", precio: 450 },
   };
 
   function claveItem(id, formato) {
