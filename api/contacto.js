@@ -1,4 +1,4 @@
-const { enviarContacto, ErrorValidacion } = require("../lib/enviar-contacto");
+const { enviarContacto, ErrorValidacion } = require("./_lib/enviar-contacto");
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") {

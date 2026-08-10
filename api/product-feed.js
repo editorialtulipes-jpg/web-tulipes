@@ -1,6 +1,6 @@
 const libros = require("../libros.json");
 const productos = require("../productos.json");
-const { construirFeedTxt } = require("../lib/product-feed");
+const { construirFeedTxt } = require("./_lib/product-feed");
 
 module.exports = async (req, res) => {
   if (req.method !== "GET") {

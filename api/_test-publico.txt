@@ -1,1 +1,0 @@
-si ves este texto en el navegador, api/ no bloquea archivos no-js

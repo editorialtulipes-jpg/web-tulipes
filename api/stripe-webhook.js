@@ -1,8 +1,8 @@
 const Stripe = require("stripe");
 const path = require("path");
 const libros = require("../libros.json");
-const { enviarLibrosDigitales } = require("../lib/entrega-digital");
-const { descontarStock, marcarProcesado } = require("../lib/inventario");
+const { enviarLibrosDigitales } = require("./_lib/entrega-digital");
+const { descontarStock, marcarProcesado } = require("./_lib/inventario");
 
 function leerRawBody(req) {
   return new Promise((resolve, reject) => {

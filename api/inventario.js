@@ -1,4 +1,4 @@
-const { obtenerStockVarios, STOCK_INICIAL } = require("../lib/inventario");
+const { obtenerStockVarios, STOCK_INICIAL } = require("./_lib/inventario");
 
 module.exports = async (req, res) => {
   if (req.method !== "GET") {

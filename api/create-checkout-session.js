@@ -1,7 +1,7 @@
 const Stripe = require("stripe");
 const libros = require("../libros.json");
 const productos = require("../productos.json");
-const { construirParametrosSesion, ErrorValidacion } = require("../lib/checkout-shared");
+const { construirParametrosSesion, ErrorValidacion } = require("./_lib/checkout-shared");
 
 const catalogo = [...libros, ...productos];
 

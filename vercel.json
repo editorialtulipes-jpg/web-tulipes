@@ -2,12 +2,10 @@
   "cleanUrls": true,
   "functions": {
     "api/stripe-webhook.js": {
-      "includeFiles": "assets/digital/**"
+      "includeFiles": "api/_digital/**"
     }
   },
   "rewrites": [
-    { "source": "/assets/digital/:path*", "destination": "/api/no-publico" },
-    { "source": "/lib/:path*", "destination": "/api/no-publico" },
     { "source": "/netlify/:path*", "destination": "/api/no-publico" }
   ]
 }
