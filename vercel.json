@@ -4,5 +4,10 @@
     "api/stripe-webhook.js": {
       "includeFiles": "assets/digital/**"
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/assets/digital/:path*", "destination": "/api/_no-publico" },
+    { "source": "/lib/:path*", "destination": "/api/_no-publico" },
+    { "source": "/netlify/:path*", "destination": "/api/_no-publico" }
+  ]
 }
