@@ -240,7 +240,7 @@ nav a.activa {
   opacity: 0;
 }
 
-.formato-opcion span {
+.formato-opcion > span {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -253,23 +253,23 @@ nav a.activa {
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.formato-opcion span b {
+.formato-opcion > span b {
   font-size: 0.9rem;
   color: var(--text);
   font-weight: 600;
 }
 
-.formato-opcion:hover span {
+.formato-opcion:hover > span {
   border-color: var(--accent);
 }
 
-.formato-opcion:has(input:checked) span {
+.formato-opcion:has(input:checked) > span {
   background: var(--accent);
   border-color: var(--accent);
   color: white;
 }
 
-.formato-opcion:has(input:checked) span b {
+.formato-opcion:has(input:checked) > span b {
   color: white;
 }
 
