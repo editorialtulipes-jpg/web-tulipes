@@ -68,6 +68,14 @@
     return items.some((i) => i.formato === "fisico");
   }
 
+  function hayDigital(items) {
+    return items.some((i) => i.formato === "digital");
+  }
+
+  function emailValido(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
   function montoEnvio(items, zona) {
     if (!hayFisico(items)) return 0;
     return ZONAS_ENVIO[zona]?.precio ?? 0;
@@ -94,6 +102,7 @@
     const totalEl = document.querySelector("[data-carrito-total]");
     const pagarBtn = document.querySelector("[data-carrito-pagar]");
     const envioSeccion = document.querySelector("[data-envio-seccion]");
+    const emailSeccion = document.querySelector("[data-email-seccion]");
     if (!lista) return;
 
     lista.innerHTML = "";
@@ -121,6 +130,14 @@
       fila.querySelector("[data-quitar]").addEventListener("click", () => quitarDelCarrito(item.clave));
       lista.appendChild(fila);
     });
+
+    // El correo de entrega solo se pide si hay al menos un libro digital en el carrito.
+    // No se reutiliza el correo que Stripe capture al pagar: con Apple Pay/Google Pay
+    // ese correo lo autocompleta el monedero desde la cuenta del comprador (ej. su Apple
+    // ID), que puede no ser el correo que realmente revisa.
+    if (emailSeccion) {
+      emailSeccion.style.display = hayDigital(items) ? "block" : "none";
+    }
 
     // El cotizador de envío solo se muestra si hay al menos un libro físico en el carrito.
     if (envioSeccion) {
@@ -162,6 +179,17 @@
     if (items.length === 0) return;
     const zona = leerZona();
 
+    let emailDigital = "";
+    if (hayDigital(items)) {
+      const input = document.querySelector("[data-email-digital]");
+      emailDigital = (input?.value || "").trim();
+      if (!emailValido(emailDigital)) {
+        alert("Escribe un correo válido para recibir tu libro digital.");
+        input?.focus();
+        return;
+      }
+    }
+
     const boton = document.querySelector("[data-carrito-pagar]");
     const textoOriginal = boton.textContent;
     boton.disabled = true;
@@ -172,6 +200,7 @@
         items: items.map((i) => ({ id: i.id, cantidad: i.cantidad, formato: i.formato })),
       };
       if (hayFisico(items)) payload.zona = zona;
+      if (hayDigital(items)) payload.email = emailDigital;
 
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",

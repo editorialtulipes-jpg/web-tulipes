@@ -11,11 +11,11 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { items, zona } = req.body || {};
+  const { items, zona, email } = req.body || {};
 
   let params;
   try {
-    params = await construirParametrosSesion({ items, zona, libros: catalogo });
+    params = await construirParametrosSesion({ items, zona, libros: catalogo, email });
   } catch (err) {
     if (err instanceof ErrorValidacion) {
       res.status(400).send(err.message);

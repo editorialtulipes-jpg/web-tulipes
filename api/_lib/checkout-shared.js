@@ -13,7 +13,9 @@ const ZONAS_ENVIO = {
 
 class ErrorValidacion extends Error {}
 
-async function construirParametrosSesion({ items, zona, libros }) {
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+async function construirParametrosSesion({ items, zona, libros, email }) {
   if (!Array.isArray(items) || items.length === 0) {
     throw new ErrorValidacion("El carrito está vacío");
   }
@@ -51,6 +53,16 @@ async function construirParametrosSesion({ items, zona, libros }) {
 
     return { libro, formato, cantidad, precioUnitario };
   });
+
+  // El correo de entrega de libros digitales se pide en nuestro propio
+  // formulario y no en el que use Stripe para cobrar: con Apple Pay/Google Pay,
+  // Stripe autocompleta el correo del pago desde la cuenta del comprador (ej.
+  // su Apple ID), que puede no ser el correo que realmente revisa.
+  if (itemsDigitales.length > 0) {
+    if (typeof email !== "string" || !EMAIL_REGEX.test(email.trim())) {
+      throw new ErrorValidacion("Escribe un correo válido para recibir tu libro digital");
+    }
+  }
 
   const idsAChecar = Object.keys(pedidosControlados);
   if (idsAChecar.length > 0) {
@@ -97,9 +109,14 @@ async function construirParametrosSesion({ items, zona, libros }) {
   }
 
   const metadata = {};
-  if (itemsDigitales.length > 0) metadata.digital_items = JSON.stringify(itemsDigitales);
+  if (itemsDigitales.length > 0) {
+    metadata.digital_items = JSON.stringify(itemsDigitales);
+    metadata.digital_email = email.trim();
+  }
   if (itemsFisicos.length > 0) metadata.physical_items = JSON.stringify(itemsFisicos);
   if (Object.keys(metadata).length > 0) params.metadata = metadata;
+
+  if (itemsDigitales.length > 0) params.customer_email = email.trim();
 
   return params;
 }

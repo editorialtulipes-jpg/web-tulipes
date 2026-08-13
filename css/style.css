@@ -1007,20 +1007,23 @@ footer > .footer-redes {
   margin-left: 0.3rem;
 }
 
-.carrito-envio {
+.carrito-envio,
+.carrito-email {
   border-top: 1px solid var(--linea);
   padding-top: 1rem;
   margin-top: 1rem;
 }
 
-.carrito-envio label {
+.carrito-envio label,
+.carrito-email label {
   display: block;
   font-size: 0.8rem;
   color: var(--muted);
   margin-bottom: 0.4rem;
 }
 
-.carrito-envio select {
+.carrito-envio select,
+.carrito-email input {
   width: 100%;
   padding: 0.5rem;
   font-family: inherit;

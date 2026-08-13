@@ -36,7 +36,11 @@ async function handler(req, res) {
 
   if (evento.type === "checkout.session.completed") {
     const session = evento.data.object;
-    const email = session.customer_details?.email;
+    // El correo de entrega digital viene de nuestro propio formulario
+    // (metadata.digital_email), no del que capture Stripe al cobrar: con
+    // Apple Pay/Google Pay ese correo lo autocompleta el monedero desde la
+    // cuenta del comprador, que puede no ser el que realmente revisa.
+    const email = session.metadata?.digital_email || session.customer_details?.email;
     const itemsDigitales = session.metadata?.digital_items ? JSON.parse(session.metadata.digital_items) : [];
     const itemsFisicos = session.metadata?.physical_items ? JSON.parse(session.metadata.physical_items) : [];
 
