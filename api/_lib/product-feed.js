@@ -1,4 +1,5 @@
 const { obtenerStockVarios } = require("./inventario");
+const { PROMO, precioConDescuento } = require("./promo");
 
 const SITIO_BASE = "https://www.tulipeseditorial.com";
 const MARCA = "Editorial Tulipes";
@@ -37,8 +38,10 @@ async function construirFeedTxt({ libros, productos }) {
 
   const encabezado = [
     "id", "title", "description", "link", "image_link", "availability",
-    "price", "brand", "condition", "gtin", "identifier_exists",
+    "price", "sale_price", "sale_price_effective_date", "brand", "condition", "gtin", "identifier_exists",
   ];
+
+  const rangoPromo = `${PROMO.desde.toISOString()}/${PROMO.hasta.toISOString()}`;
 
   const filas = items.map((item) => {
     const cantidad = stock[item.id];
@@ -53,6 +56,8 @@ async function construirFeedTxt({ libros, productos }) {
       item.image_link,
       disponible,
       `${Number(item.price).toFixed(2)} MXN`,
+      `${precioConDescuento(item.price).toFixed(2)} MXN`,
+      rangoPromo,
       MARCA,
       "new",
       gtinValido ? item.isbn : "",

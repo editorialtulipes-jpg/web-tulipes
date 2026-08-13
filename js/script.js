@@ -1,6 +1,39 @@
 const COLORES_PORTADA = ["var(--accent)", "var(--accent-secundario)", "var(--text)"];
 const SITIO_BASE = "https://www.tulipeseditorial.com";
 
+// Promoción de lanzamiento: 20% de descuento en toda la tienda. Esto solo
+// controla qué precio se muestra — debe coincidir con api/_lib/promo.js, que
+// es el que de verdad calcula el cobro en el servidor.
+const PROMO = {
+  descuento: 0.2,
+  desde: new Date("2026-08-13T00:00:00-06:00"),
+  hasta: new Date("2026-08-25T23:59:59-06:00"),
+};
+
+function promoActiva() {
+  const ahora = new Date();
+  return ahora >= PROMO.desde && ahora <= PROMO.hasta;
+}
+
+function precioConDescuento(precio) {
+  return Math.round(precio * (1 - PROMO.descuento));
+}
+
+// Devuelve el HTML de un precio, con tachado + badge de oferta si la promo
+// está activa. `precio` es el valor sin descontar (el de libros.json/productos.json).
+function htmlPrecio(precio, { comoValorBase = false } = {}) {
+  if (!promoActiva()) return comoValorBase ? `$${precio}` : `<p class="precio">$${precio}</p>`;
+  const final = precioConDescuento(precio);
+  const contenido = `<span class="precio-antes">$${precio}</span> $${final} <span class="precio-badge">-20%</span>`;
+  return comoValorBase ? contenido : `<p class="precio precio-oferta">${contenido}</p>`;
+}
+
+// Precio que de verdad se agrega al carrito (con descuento si aplica). Debe
+// coincidir con lo que cobra el servidor en api/_lib/checkout-shared.js.
+function precioParaCarrito(precio) {
+  return promoActiva() ? precioConDescuento(precio) : precio;
+}
+
 function actualizarMetaSEO({ description, canonical, ogTitle, ogImage, ogType = "website" }) {
   const set = (selector, attr, valor) => {
     const el = document.querySelector(selector);
@@ -52,9 +85,9 @@ function bloqueCompraLibro(libro, stock, { comprable = true, mostrarPrecio = tru
 
   const precio = mostrarPrecio && !mostrarSelectorFormato
     ? (tieneFisico
-        ? `<p class="precio">$${libro.precio_fisico}</p>`
+        ? htmlPrecio(libro.precio_fisico)
         : tieneDigital
-          ? `<p class="precio">$${libro.precio_digital}</p>`
+          ? htmlPrecio(libro.precio_digital)
           : agotado
             ? `<p class="precio precio-agotado">Agotado</p>`
             : `<p class="precio">Precio a consultar</p>`)
@@ -63,19 +96,19 @@ function bloqueCompraLibro(libro, stock, { comprable = true, mostrarPrecio = tru
   const formatoOpciones = mostrarSelectorFormato
     ? `<div class="formato-opciones" data-formato-opciones>
          <label class="formato-opcion">
-           <input type="radio" name="formato-${libro.id}" value="fisico" data-precio="${libro.precio_fisico}" checked>
-           <span>Físico<b>$${libro.precio_fisico}</b></span>
+           <input type="radio" name="formato-${libro.id}" value="fisico" data-precio="${precioParaCarrito(libro.precio_fisico)}" checked>
+           <span>Físico<b>${htmlPrecio(libro.precio_fisico, { comoValorBase: true })}</b></span>
          </label>
          <label class="formato-opcion">
-           <input type="radio" name="formato-${libro.id}" value="digital" data-precio="${libro.precio_digital}">
-           <span>Digital<b>$${libro.precio_digital}</b></span>
+           <input type="radio" name="formato-${libro.id}" value="digital" data-precio="${precioParaCarrito(libro.precio_digital)}">
+           <span>Digital<b>${htmlPrecio(libro.precio_digital, { comoValorBase: true })}</b></span>
          </label>
        </div>`
     : "";
 
   const formatoUnicoDigital = !tieneFisico && tieneDigital;
   const botonAgregar = comprable && (tieneFisico || tieneDigital)
-    ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-imagen="${libro.imagen ?? ""}"${formatoUnicoDigital ? ` data-formato="digital"` : ""} data-precio-fisico="${tieneFisico ? libro.precio_fisico : libro.precio_digital}">Agregar al carrito</button>`
+    ? `<button class="btn-agregar" data-agregar-carrito data-id="${libro.id}" data-titulo="${libro.titulo}" data-imagen="${libro.imagen ?? ""}"${formatoUnicoDigital ? ` data-formato="digital"` : ""} data-precio-fisico="${precioParaCarrito(tieneFisico ? libro.precio_fisico : libro.precio_digital)}">Agregar al carrito</button>`
     : "";
 
   return { notaAgotado, precio, formatoOpciones, botonAgregar };
@@ -175,7 +208,7 @@ async function cargarDetalleLibro(contenedorId) {
       "@type": "Offer",
       url: urlLibro,
       priceCurrency: "MXN",
-      price: agotadoFisico ? libro.precio_digital ?? libro.precio_fisico : libro.precio_fisico ?? libro.precio_digital,
+      price: precioParaCarrito(agotadoFisico ? libro.precio_digital ?? libro.precio_fisico : libro.precio_fisico ?? libro.precio_digital),
       availability: agotadoFisico && libro.precio_digital == null
         ? "https://schema.org/OutOfStock"
         : "https://schema.org/InStock",
@@ -238,10 +271,10 @@ function tarjetaProducto(producto, stock) {
   const agotado = typeof stock === "number" && stock <= 0;
   const precio = agotado
     ? `<p class="precio precio-agotado">Agotado</p>`
-    : `<p class="precio">$${producto.precio_fisico}</p>`;
+    : htmlPrecio(producto.precio_fisico);
   const botonAgregar = agotado
     ? ""
-    : `<button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${producto.imagen ?? ""}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>`;
+    : `<button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${producto.imagen ?? ""}" data-precio-fisico="${precioParaCarrito(producto.precio_fisico)}">Agregar al carrito</button>`;
 
   return `
     <section class="libro">
@@ -309,7 +342,7 @@ async function cargarDetalleProducto(contenedorId) {
       "@type": "Offer",
       url: urlProducto,
       priceCurrency: "MXN",
-      price: producto.precio_fisico,
+      price: precioParaCarrito(producto.precio_fisico),
       availability: agotado ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
     },
   });
@@ -344,8 +377,8 @@ async function cargarDetalleProducto(contenedorId) {
         <p class="sinopsis">${producto.descripcion ?? ""}</p>
         ${agotado
           ? `<p class="precio precio-agotado">Agotado</p>`
-          : `<p class="precio">$${producto.precio_fisico}</p>
-             <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagenPrincipal}" data-precio-fisico="${producto.precio_fisico}">Agregar al carrito</button>`
+          : `${htmlPrecio(producto.precio_fisico)}
+             <button class="btn-agregar" data-agregar-carrito data-id="${producto.id}" data-titulo="${producto.titulo}" data-imagen="${imagenPrincipal}" data-precio-fisico="${precioParaCarrito(producto.precio_fisico)}">Agregar al carrito</button>`
         }
       </div>
     </section>
@@ -459,7 +492,7 @@ async function tarjetaAnuncioLibro(anuncio, prefijo = "") {
   const libro = libros.find((l) => l.id === anuncio.id);
   if (!libro) return tarjetaAnuncioNativo();
 
-  const desde = libro.precio_digital ?? libro.precio_fisico;
+  const desde = precioParaCarrito(libro.precio_digital ?? libro.precio_fisico);
 
   return `
     <div class="articulo anuncio">

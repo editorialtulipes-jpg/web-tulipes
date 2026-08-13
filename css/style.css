@@ -872,6 +872,29 @@ footer > .footer-redes {
   color: var(--muted);
 }
 
+.precio-antes {
+  color: var(--muted);
+  font-weight: 400;
+  text-decoration: line-through;
+  margin-right: 0.35rem;
+}
+
+.precio-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+
+.formato-opcion .precio-antes {
+  font-size: 0.85em;
+}
+
 .nota-agotado {
   font-size: 0.8rem;
   color: var(--muted);

@@ -4,6 +4,7 @@
 // confía en un precio o monto de envío que venga del cliente.
 
 const { obtenerStockVarios, STOCK_INICIAL } = require("./inventario");
+const { promoActiva, precioConDescuento } = require("./promo");
 
 const ZONAS_ENVIO = {
   gdl: { nombre: "Guadalajara y zona metropolitana", precio: 70 },
@@ -77,16 +78,20 @@ async function construirParametrosSesion({ items, zona, libros, email }) {
     }
   }
 
-  const line_items = lineasCrudas.map(({ libro, formato, cantidad, precioUnitario }) => ({
-    quantity: cantidad,
-    price_data: {
-      currency: "mxn",
-      unit_amount: Math.round(precioUnitario * 100),
-      product_data: {
-        name: `${libro.titulo} (${formato === "digital" ? "digital" : "físico"})`,
+  const enPromo = promoActiva();
+  const line_items = lineasCrudas.map(({ libro, formato, cantidad, precioUnitario }) => {
+    const precioFinal = enPromo ? precioConDescuento(precioUnitario) : precioUnitario;
+    return {
+      quantity: cantidad,
+      price_data: {
+        currency: "mxn",
+        unit_amount: Math.round(precioFinal * 100),
+        product_data: {
+          name: `${libro.titulo} (${formato === "digital" ? "digital" : "físico"})${enPromo ? " — 20% OFF" : ""}`,
+        },
       },
-    },
-  }));
+    };
+  });
 
   const params = { mode: "payment", line_items };
 
