@@ -3,7 +3,7 @@ const path = require("path");
 const libros = require("../libros.json");
 const productos = require("../productos.json");
 const { enviarLibrosDigitales, enviarNotificacionPedido } = require("./_lib/entrega-digital");
-const { descontarStock, marcarProcesado } = require("./_lib/inventario");
+const { descontarStock, marcarProcesado, estaProcesado } = require("./_lib/inventario");
 
 function leerRawBody(req) {
   return new Promise((resolve, reject) => {
@@ -54,12 +54,13 @@ async function handler(req, res) {
       }
     }
 
-    const esNuevaNotificacion = await marcarProcesado(`pedido-notificacion:${session.id}`);
-    if (esNuevaNotificacion) {
+    const claveNotificacion = `pedido-notificacion:${session.id}`;
+    if (!(await estaProcesado(claveNotificacion))) {
       await enviarNotificacionPedido({
         session,
         catalogo: [...libros, ...productos],
       });
+      await marcarProcesado(claveNotificacion);
     }
 
     if (email && itemsDigitales.length > 0) {

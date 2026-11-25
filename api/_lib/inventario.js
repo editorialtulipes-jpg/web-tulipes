@@ -64,4 +64,8 @@ async function marcarProcesado(claveIdempotencia) {
   return resultado === "OK";
 }
 
-module.exports = { obtenerStock, obtenerStockVarios, descontarStock, marcarProcesado, STOCK_INICIAL };
+async function estaProcesado(claveIdempotencia) {
+  return await redis.get(`procesado:${claveIdempotencia}`) != null;
+}
+
+module.exports = { obtenerStock, obtenerStockVarios, descontarStock, marcarProcesado, estaProcesado, STOCK_INICIAL };
