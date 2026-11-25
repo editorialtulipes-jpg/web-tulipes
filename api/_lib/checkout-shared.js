@@ -10,6 +10,7 @@ const ZONAS_ENVIO = {
   gdl: { nombre: "Guadalajara y zona metropolitana", precio: 70 },
   jalisco: { nombre: "Resto de Jalisco", precio: 100 },
   nacional: { nombre: "Resto de México", precio: 150 },
+  correos: { nombre: "Correos de México (máximo 3 libros)", precio: 60 },
 };
 
 class ErrorValidacion extends Error {}
@@ -118,10 +119,20 @@ async function construirParametrosSesion({ items, zona, libros, email }) {
     metadata.digital_items = JSON.stringify(itemsDigitales);
     metadata.digital_email = email.trim();
   }
-  if (itemsFisicos.length > 0) metadata.physical_items = JSON.stringify(itemsFisicos);
+  if (itemsFisicos.length > 0) {
+    metadata.physical_items = JSON.stringify(itemsFisicos);
+    metadata.shipping_zone = zona;
+  }
   if (Object.keys(metadata).length > 0) params.metadata = metadata;
 
   if (itemsDigitales.length > 0) params.customer_email = email.trim();
+
+  if (zona === "correos") {
+    const cantidadFisicos = itemsFisicos.reduce((total, item) => total + item.cantidad, 0);
+    if (cantidadFisicos > 3) {
+      throw new ErrorValidacion("Correos de México permite un máximo de 3 libros físicos por pedido");
+    }
+  }
 
   return params;
 }

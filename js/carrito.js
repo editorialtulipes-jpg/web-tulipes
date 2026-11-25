@@ -9,6 +9,7 @@
     gdl: { nombre: "Guadalajara y zona metropolitana", precio: 70 },
     jalisco: { nombre: "Resto de Jalisco", precio: 100 },
     nacional: { nombre: "Resto de México", precio: 150 },
+    correos: { nombre: "Correos de México (máximo 3 libros)", precio: 60 },
   };
 
   function claveItem(id, formato) {
@@ -86,6 +87,12 @@
     return subtotal + montoEnvio(items, zona);
   }
 
+  function cantidadFisicos(items) {
+    return items
+      .filter((item) => item.formato === "fisico")
+      .reduce((total, item) => total + item.cantidad, 0);
+  }
+
   function actualizarContador() {
     const cantidad = leerCarrito().reduce((suma, i) => suma + i.cantidad, 0);
     document.querySelectorAll("[data-carrito-contador]").forEach((el) => {
@@ -96,7 +103,7 @@
 
   function renderizarCarrito() {
     const items = leerCarrito();
-    const zona = leerZona();
+    let zona = leerZona();
     const lista = document.querySelector("[data-carrito-lista]");
     const vacio = document.querySelector("[data-carrito-vacio]");
     const totalEl = document.querySelector("[data-carrito-total]");
@@ -144,15 +151,29 @@
       if (hayFisico(items)) {
         envioSeccion.style.display = "block";
         const select = envioSeccion.querySelector("[data-zona-envio]");
-        if (select && select.options.length === 0) {
-          Object.entries(ZONAS_ENVIO).forEach(([clave, datos]) => {
-            const opt = document.createElement("option");
-            opt.value = clave;
-            opt.textContent = `${datos.nombre} — $${datos.precio}`;
-            select.appendChild(opt);
-          });
+        const totalFisicos = cantidadFisicos(items);
+
+        if (zona === "correos" && totalFisicos > 3) {
+          zona = "nacional";
+          guardarZona(zona);
         }
-        if (select) select.value = zona;
+
+        if (select) {
+          if (select.options.length === 0) {
+            Object.entries(ZONAS_ENVIO).forEach(([clave, datos]) => {
+              const opt = document.createElement("option");
+              opt.value = clave;
+              opt.textContent = `${datos.nombre} — $${datos.precio}`;
+              opt.disabled = clave === "correos" && totalFisicos > 3;
+              select.appendChild(opt);
+            });
+          } else {
+            const opcionCorreos = select.querySelector('option[value="correos"]');
+            if (opcionCorreos) opcionCorreos.disabled = totalFisicos > 3;
+          }
+          select.value = zona;
+        }
+
         const montoEl = envioSeccion.querySelector("[data-envio-monto]");
         if (montoEl) montoEl.textContent = `$${montoEnvio(items, zona)}`;
       } else {

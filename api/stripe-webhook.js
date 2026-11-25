@@ -1,7 +1,8 @@
 const Stripe = require("stripe");
 const path = require("path");
 const libros = require("../libros.json");
-const { enviarLibrosDigitales } = require("./_lib/entrega-digital");
+const productos = require("../productos.json");
+const { enviarLibrosDigitales, enviarNotificacionPedido } = require("./_lib/entrega-digital");
 const { descontarStock, marcarProcesado } = require("./_lib/inventario");
 
 function leerRawBody(req) {
@@ -51,6 +52,14 @@ async function handler(req, res) {
       if (esNuevo) {
         await Promise.all(itemsFisicos.map((item) => descontarStock(item.id, item.cantidad)));
       }
+    }
+
+    const esNuevaNotificacion = await marcarProcesado(`pedido-notificacion:${session.id}`);
+    if (esNuevaNotificacion) {
+      await enviarNotificacionPedido({
+        session,
+        catalogo: [...libros, ...productos],
+      });
     }
 
     if (email && itemsDigitales.length > 0) {
