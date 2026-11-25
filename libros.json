@@ -1,5 +1,18 @@
 [
   {
+  "id":"Historia-general-del-derrumbe",
+  "titulo":"Historia general del derrumbe",
+  "subtitulo":"",
+  "autor":"Lorena Aviña",
+  "precio_fisico":250,
+  "imagen":"assets/images/Artboard-3.png",
+  "link":"#",
+  "isbn":"9786076948736",
+  "paginas":96,
+  "genero":"Poesía",
+  "sinopsis":"“Historia general del derrumbe” explora las distintas formas de caída: la desaparición de especies, el calentamiento de los océanos, la devastación de los bosques y las contradicciones de una sociedad construida sobre el consumo. A través de voces que habitan el agua, los árboles, microorganismos y fenómenos naturales, Lorena Aviña observa el colapso ambiental sin renunciar al asombro ante el mundo vivo."
+  },
+  {
     "id": "cuerpos-y-territorios",
     "titulo": "Cuerpos y territorios",
     "subtitulo": "la anatomia de la explotacion simbolica",

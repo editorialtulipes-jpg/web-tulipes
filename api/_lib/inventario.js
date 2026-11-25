@@ -8,6 +8,7 @@ const redis = new Redis({
 // Inventario inicial por id de libro/producto — solo se usa la primera vez
 // que se consulta cada clave (si ya existe en Redis, se respeta ese valor).
 const STOCK_INICIAL = {
+  "Historia-general-del-derrumbe": 50,
   "cuerpos-y-territorios": 50,
   contragolpe: 50,
   "lectura-marina-arrecife": 50,
